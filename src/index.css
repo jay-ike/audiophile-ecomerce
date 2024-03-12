@@ -8,7 +8,7 @@ resets;
     font-family: "Just";
     src: url("./assets/JUST Sans Variable.ttf") format("truetype");
     font-weight: 300 900;
-    font-feature-settings: "dlig" on, "ordn" on, "aalt" on, "ss02" on;
+    font-feature-settings: "dlig" on, "ordn" on, "ss02" on;
     font-display: swap;
 }
 
@@ -19,6 +19,9 @@ body {
         sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    line-height: 1.5;
+    letter-spacing: .01em;
+    word-spacing: 0.05em;
 }
 
 @layer resets {
@@ -53,7 +56,7 @@ body {
         padding: 0;
     }
 
-    :is(summary, ul):where(:not([class])) {
+    :is(summary, ul):where([class]) {
         list-style: none;
     }
 
@@ -68,12 +71,19 @@ body {
     }
 
     a:not([class]) {
+        --outline-style: dashed;
         text-decoration-thickness: max(0.08em, 1px);
         text-underline-offset: 0.15em;
+        color: inherit;
+    }
+
+    a:not([class]):where(:focus-visible, :hover) {
+        color: var(--system-color-paleOrange);
+        text-decoration: currentColor wavy underline;
     }
 
     :focus-visible {
-        --outline-size: max(2px, .15em);
+        --outline-size: max(2px, .3em);
         outline: var(--outline-width, var(--outline-size)) var(--outline-style, solid) var(--outline-clr, currentColor);
         outline-offset: var(--outline-offset, var(--outline-size));
     }
@@ -93,6 +103,12 @@ body {
 
     :is(a, button, input):focus:not(:focus-visible) {
         outline: none;
+    }
+
+    p:where(:not([class])) {
+        text-align: start;
+        text-wrap: balance;
+        max-width: 35em;
     }
 }
 
@@ -157,21 +173,39 @@ body {
     footer {
         --color-fill: var(--system-color-dark);
         --color-text: var(--system-color-pale);
+        --min-padding: 2em 1.5em 1.5em;
         display: flex;
         flex-flow: column nowrap;
         gap: 2rem;
-        position: relative;
+        background-image: linear-gradient(var(--system-color-orange), var(--system-color-orange));
+        background-position: var(--deco-pos, left 50% top 0%);
+        background-size: 101px 4px;
+        background-repeat: no-repeat;
     }
 
-    footer> :where(svg, .column) {
+    footer a {
+        text-transform: uppercase;
+        font-weight: 700;
+    }
+
+    footer> :where(svg, ul:first-of-type) {
         align-self: center;
     }
 
-    svg:where(footer > *)::before {
-        content: "";
-        inline-size: 101px;
-        block-size: 4px;
-        inset-block-start: 0;
-        background-color: var(--system-color-orange);
+    @media screen and (min-width: 480px) {
+        footer {
+            --deco-pos: left 1.5em top 0%;
+        }
+
+        footer> :is(svg, .column) {
+            --col-dir: row;
+            align-self: start;
+        }
+
+        footer>.column:last-child {
+            align-self: stretch;
+            justify-content: space-between;
+        }
+
     }
 }

@@ -1,5 +1,6 @@
 import logo from './logo.svg';
 import styles from './App.module.css';
+import {Footer} from "./components";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           Learn Solid
         </a>
       </header>
+      <Footer/>
     </div>
   );
 }
