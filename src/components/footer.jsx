@@ -15,35 +15,33 @@ function Footer() {
             <p>
                 Audiophile is an all in one stop to fulfill your audio needs. We're a small team of music lovers and sound specialists who are devoted to helping you get the most out of personal audio. Come and visit our demo facility - we’re open 7 days a week.
             </p>
-            <div className="column">
-                <p>copyright 2021. all rights reserved</p>
-                <ul class="row" role="list">
-                    <li>
-                        <a href="" aria-label="follow us on Facebook">
-                            <svg width="24" height="24">
-                                <title>Facebook Logo</title>
-                                <use href={sprites + "#facebook"} />
-                            </svg>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="" aria-label="follow us on Twitter">
-                            <svg width="24" height="24">
-                                <title>Twitter Logo</title>
-                                <use href={sprites + "#twitter"} />
-                            </svg>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="" aria-label="follow us on Instagram">
-                            <svg width="24" height="24">
-                                <title>Instagram Logo</title>
-                                <use href={sprites + "#instagram"} />
-                            </svg>
-                        </a>
-                    </li>
-                </ul>
-            </div>
+            <p>copyright 2021. all rights reserved</p>
+            <ul class="row" role="list">
+                <li>
+                    <a href="" aria-label="follow us on Facebook">
+                        <svg width="24" height="24">
+                            <title>Facebook Logo</title>
+                            <use href={sprites + "#facebook"} />
+                        </svg>
+                    </a>
+                </li>
+                <li>
+                    <a href="" aria-label="follow us on Twitter">
+                        <svg width="24" height="24">
+                            <title>Twitter Logo</title>
+                            <use href={sprites + "#twitter"} />
+                        </svg>
+                    </a>
+                </li>
+                <li>
+                    <a href="" aria-label="follow us on Instagram">
+                        <svg width="24" height="24">
+                            <title>Instagram Logo</title>
+                            <use href={sprites + "#instagram"} />
+                        </svg>
+                    </a>
+                </li>
+            </ul>
         </footer>
     );
 }
