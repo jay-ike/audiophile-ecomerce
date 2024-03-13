@@ -1,8 +1,7 @@
-@layer utilities,
-layout,
+@layer resets, layout,
+utilities,
 theme,
-typography,
-resets;
+typography;
 
 @font-face {
     font-family: "Just";
@@ -26,10 +25,25 @@ body {
 
 @layer typography {
     :is(h1, h2, h3, h4, p, .fluid-type, footer a) {
-        font-size: clamp(var(--f-size) * clamp(0.5, 1 - var(--f-size-diff, 0.3), 1),
+        font-size: clamp(var(--f-size, 1rem) * clamp(0.5, 1 - var(--f-size-diff, 0.3), 0.9),
                 var(--f-size-fluid, var(--default-fluid, 3vw)),
-                var(--f-size));
+                var(--f-size, 1rem));
     }
+
+    h1 {
+        --f-size: 3.5rem;
+        --f-size-diff: 0.4;
+    }
+
+    h2 {
+        --f-size: 2.5rem;
+        --f-size-diff: 0.45;
+    }
+
+    :is(h3, h4) {
+        --f-size: 1.75rem;
+    }
+
     @supports (font-size: 1cqi) {
         :is(h1, h2, h3, h4, p, .fluid-type, footer a) {
             --default-fluid: 5cqi;
@@ -119,9 +133,79 @@ body {
     }
 
     p:where(:not([class])) {
-        text-align: start;
         text-wrap: balance;
-        max-inline-size: 50em;
+        max-inline-size: var(--p-width, 50em);
+    }
+}
+
+@layer utilities {
+    a {
+        text-transform: uppercase;
+        font-weight: 700;
+    }
+
+    [data-align] {
+        text-align: attr("data-align");
+    }
+
+    .f-product {
+        --col-align: center;
+        --radius: .5rem;
+        --color-text: var(--system-color-pale);
+        --sm-circle: var(--sm, 37%);
+        --md-circle: var(--md, 53%);
+        --xl-circle: var(--xl, 87%);
+        --circle-clr: hsla(0, 0%, 85%, 0.3);
+        background: radial-gradient(circle at var(--bg-pos, left 50% top 31%),
+                #0000 var(--sm-circle),
+                var(--circle-clr) var(--sm-circle),
+                var(--circle-clr) calc(var(--sm-circle) + 2px),
+                #0000 calc(var(--sm-circle) + 3px),
+                #0000 var(--md-circle),
+                var(--circle-clr) var(--md-circle),
+                var(--circle-clr) calc(var(--md-circle) + 2px),
+                #0000 calc(var(--md-circle) + 3px),
+                #0000 var(--xl-circle),
+                var(--circle-clr) var(--xl-circle),
+                var(--circle-clr) calc(var(--xl-circle) + 2px),
+                #0000 calc(var(--xl-circle) + 3px)) var(--system-color-orange);
+
+        text-align: center;
+
+        & a {
+            --min-padding: .75rem;
+            --color-fill: var(--system-color-dark);
+            --color-text: var(--system-color-pale);
+            --radius: initial;
+            --outline-style: dashed;
+            --outline-clr: var(--color-fill);
+            display: inline-block;
+            text-decoration: none;
+        }
+
+        & a:is(:focus-visible, :hover) {
+            --color-fill: hsl(0, 0%, 30%);
+        }
+    }
+
+    @media screen and (min-width: 768px) {
+        .f-product {
+            --col-dir: row;
+            --i-alignment: space-between;
+            --p-width: 25em;
+            --bg-pos: left 25% bottom 31%;
+            --sm: 20%;
+            --md: 37%;
+            padding: 1.5rem 3rem;
+            overflow: clip;
+            text-align: start;
+
+            & > img {
+                flex-basis: 410px;
+                margin-block-end: -3em;
+            }
+        }
+
     }
 }
 
@@ -184,6 +268,7 @@ body {
     }
 
     :is(.template-grid, footer) {
+        --col-align: center;
         display: grid;
         grid-template: var(--g-template);
         container: var(--container-name, grid) / inline-size;
@@ -215,7 +300,6 @@ body {
         --color-text: var(--system-color-pale);
         --min-padding: 2em 1.5em 1.5em;
         --g-template: ". area1 ." ". area2 ." "area3 area3 area3" "area4 area4 area4" "area5 area5 area5";
-        --f-size: 1rem;
         --c-space: .75rem;
         background-image: linear-gradient(var(--system-color-orange), var(--system-color-orange));
         background-position: var(--deco-pos, left 50% top 0%);
