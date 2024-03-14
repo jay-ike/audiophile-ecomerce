@@ -16,8 +16,6 @@ body {
     font-family: "Just", -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
         'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
         sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
     line-height: 1.5;
     letter-spacing: .01em;
     word-spacing: 0.05em;
@@ -28,6 +26,10 @@ body {
         font-size: clamp(var(--f-size, 1rem) * clamp(0.5, 1 - var(--f-size-diff, 0.3), 0.9),
                 var(--f-size-fluid, var(--default-fluid, 3vw)),
                 var(--f-size, 1rem));
+    }
+
+    :is(h1, h2, h3) {
+        text-transform: uppercase;
     }
 
     h1 {
@@ -78,7 +80,7 @@ body {
         display: block;
     }
 
-    :is(ul, ol, fieldset, legend) {
+    :is(ul, ol, fieldset, legend, menu) {
         margin: 0;
         padding: 0;
     }
@@ -144,69 +146,58 @@ body {
         font-weight: 700;
     }
 
-    [data-align] {
-        text-align: attr("data-align");
+    img:where(.categories *) {
+        border-image: radial-gradient(hsla(0, 0%, 0%, 0.4) 15%, #0000 70%) var(--s, 0% 50% 100%) / 50% /0 15px 20px;
     }
 
-    .f-product {
-        --col-align: center;
-        --radius: .5rem;
-        --color-text: var(--system-color-pale);
-        --sm-circle: var(--sm, 37%);
-        --md-circle: var(--md, 53%);
-        --xl-circle: var(--xl, 87%);
-        --circle-clr: hsla(0, 0%, 85%, 0.3);
-        background: radial-gradient(circle at var(--bg-pos, left 50% top 31%),
-                #0000 var(--sm-circle),
-                var(--circle-clr) var(--sm-circle),
-                var(--circle-clr) calc(var(--sm-circle) + 2px),
-                #0000 calc(var(--sm-circle) + 3px),
-                #0000 var(--md-circle),
-                var(--circle-clr) var(--md-circle),
-                var(--circle-clr) calc(var(--md-circle) + 2px),
-                #0000 calc(var(--md-circle) + 3px),
-                #0000 var(--xl-circle),
-                var(--circle-clr) var(--xl-circle),
-                var(--circle-clr) calc(var(--xl-circle) + 2px),
-                #0000 calc(var(--xl-circle) + 3px)) var(--system-color-orange);
-
-        text-align: center;
+    .categories {
+        --outline-style: dashed;
+        --outline-clr: var(--system-color-dark);
+        --icon-fill: var(--system-color-orange);
+        --c-space: 2.5rem;
 
         & a {
-            --min-padding: .75rem;
-            --color-fill: var(--system-color-dark);
-            --color-text: var(--system-color-pale);
-            --radius: initial;
-            --outline-style: dashed;
-            --outline-clr: var(--color-fill);
-            display: inline-block;
             text-decoration: none;
-        }
+            display: inline-flex;
+            align-items: center;
 
-        & a:is(:focus-visible, :hover) {
-            --color-fill: hsl(0, 0%, 30%);
+            &::before {
+                content: "";
+                position: absolute;
+                inset: 0;
+            }
         }
+    }
+
+    .categories>article {
+        --color-fill: hsl(0, 0%, 94%);
+        --radius: .5rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+        container: category / inline-size;
+
+        &> :first-child {
+            margin-block-start: -3em;
+        }
+    }
+
+    main {
+        max-inline-size: min(95vi, 1110px);
+        margin-inline: auto;
     }
 
     @media screen and (min-width: 768px) {
-        .f-product {
+        .categories {
             --col-dir: row;
-            --i-alignment: space-between;
-            --p-width: 25em;
-            --bg-pos: left 25% bottom 31%;
-            --sm: 20%;
-            --md: 37%;
-            padding: 1.5rem 3rem;
-            overflow: clip;
-            text-align: start;
 
-            & > img {
-                flex-basis: 410px;
-                margin-block-end: -3em;
+            &>* {
+                flex-grow: 2;
             }
         }
-
     }
+
 }
 
 @layer theme {
@@ -260,7 +251,7 @@ body {
         gap: var(--s-space, 1.5em);
     }
 
-    :is(header, footer, section, .box) {
+    :is(header, footer, main, section, .box) {
         padding: var(--min-padding, 1.5em);
         background-color: var(--color-fill, transparent);
         color: var(--color-text, currentColor);

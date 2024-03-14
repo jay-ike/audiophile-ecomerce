@@ -1,30 +1,90 @@
-
 .logo {
-  animation: logo-spin infinite 20s linear;
-  height: 40vmin;
-  pointer-events: none;
+    animation: logo-spin infinite 20s linear;
+    height: 40vmin;
+    pointer-events: none;
 }
 
 .header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+    background-color: #282c34;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: white;
 }
 
 .link {
-  color: #b318f0;
+    color: #b318f0;
 }
 
 @keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.f-product {
+    --col-align: center;
+    --radius: .5rem;
+    --color-text: var(--system-color-pale);
+    --sm-circle: var(--sm, 37%);
+    --md-circle: var(--md, 53%);
+    --xl-circle: var(--xl, 87%);
+    --circle-clr: hsla(0, 0%, 85%, 0.3);
+    background: radial-gradient(circle at var(--bg-pos, left 50% top 31%),
+            #0000 var(--sm-circle),
+            var(--circle-clr) var(--sm-circle),
+            var(--circle-clr) calc(var(--sm-circle) + 2px),
+            #0000 calc(var(--sm-circle) + 3px),
+            #0000 var(--md-circle),
+            var(--circle-clr) var(--md-circle),
+            var(--circle-clr) calc(var(--md-circle) + 2px),
+            #0000 calc(var(--md-circle) + 3px),
+            #0000 var(--xl-circle),
+            var(--circle-clr) var(--xl-circle),
+            var(--circle-clr) calc(var(--xl-circle) + 2px),
+            #0000 calc(var(--xl-circle) + 3px)) var(--system-color-orange);
+
+    text-align: center;
+
+    & a {
+        --min-padding: .75rem;
+        --color-fill: var(--system-color-dark);
+        --color-text: var(--system-color-pale);
+        --radius: initial;
+        --outline-style: dashed;
+        --outline-clr: var(--color-fill);
+        display: inline-block;
+        text-decoration: none;
+    }
+
+    & a:is(:focus-visible, :hover) {
+        --color-fill: hsl(0, 0%, 30%);
+    }
+}
+
+@media screen and (min-width: 768px) {
+    .f-product {
+        --col-dir: row;
+        --i-alignment: space-between;
+        --p-width: 25em;
+        --bg-pos: left 25% bottom 31%;
+        --sm: 20%;
+        --md: 37%;
+        padding: 1.5rem 3rem;
+        overflow: clip;
+        text-align: start;
+
+        &>img {
+            flex-basis: 410px;
+            margin-block-end: -3em;
+        }
+    }
+
 }
