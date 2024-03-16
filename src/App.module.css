@@ -82,8 +82,8 @@
         text-align: start;
 
         &>img {
-            flex-basis: 410px;
-            margin-block-end: -3em;
+            flex-basis: 279px;
+            margin-block-end: -2em;
         }
     }
 

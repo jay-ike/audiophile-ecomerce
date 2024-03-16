@@ -150,23 +150,41 @@ body {
         border-image: radial-gradient(hsla(0, 0%, 0%, 0.4) 15%, #0000 70%) var(--s, 0% 50% 100%) / 50% /0 15px 20px;
     }
 
+    a:where(:is(.categories, nav) *) {
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+    }
+
+    :where([aria-hidden="true"], .visually-hidden, .xl-show) {
+        position: absolute;
+        clip-path: inset(50%);
+    }
+
+
+    .xl-show {
+        visibility: hidden;
+    }
+
     .categories {
         --outline-style: dashed;
         --outline-clr: var(--system-color-dark);
         --icon-fill: var(--system-color-orange);
         --c-space: 2.5rem;
 
-        & a {
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-
-            &::before {
-                content: "";
-                position: absolute;
-                inset: 0;
-            }
+        & a::before {
+            content: "";
+            position: absolute;
+            inset: 0;
         }
+    }
+
+    .no-padding {
+        --min-padding: 0;
+    }
+
+    [data-cart] {
+        margin-inline-start: auto;
     }
 
     .categories>article {
@@ -183,7 +201,7 @@ body {
         }
     }
 
-    main {
+    :is(main, footer, nav) {
         max-inline-size: min(95vi, 1110px);
         margin-inline: auto;
     }
@@ -196,6 +214,13 @@ body {
                 flex-grow: 2;
             }
         }
+
+        .xl-show {
+            position: static;
+            clip-path: none;
+            visibility: visible;
+        }
+
     }
 
 }
@@ -223,12 +248,6 @@ body {
         gap: var(--r-space, var(--c-space, 1.5em));
         justify-content: var(--i-alignment, start);
     }
-
-    :where([aria-hidden="true"], .visually-hidden) {
-        position: absolute;
-        clip-path: inset(50%);
-    }
-
     .segragator {
         --i-alignment: space-between;
         flex-flow: var(--direction, row) var(--wrap, nowrap);
@@ -251,7 +270,7 @@ body {
         gap: var(--s-space, 1.5em);
     }
 
-    :is(header, footer, main, section, .box) {
+    :is(header, footer, main, section, .box, button) {
         padding: var(--min-padding, 1.5em);
         background-color: var(--color-fill, transparent);
         color: var(--color-text, currentColor);
@@ -286,16 +305,24 @@ body {
         }
     }
 
-    footer {
-        --color-fill: var(--system-color-dark);
+    :is(footer, header) {
         --color-text: var(--system-color-pale);
+        border-image: linear-gradient(var(--system-color-dark), var(--system-color-dark)) 1 / 50%/ 0 100vi;
+    }
+
+    footer {
         --min-padding: 2em 1.5em 1.5em;
         --g-template: ". area1 ." ". area2 ." "area3 area3 area3" "area4 area4 area4" "area5 area5 area5";
         --c-space: .75rem;
-        background-image: linear-gradient(var(--system-color-orange), var(--system-color-orange));
-        background-position: var(--deco-pos, left 50% top 0%);
-        background-size: 101px 4px;
-        background-repeat: no-repeat;
+    }
+
+    footer::before {
+        content: "";
+        position: absolute;
+        inline-size: 101px;
+        block-size: 4px;
+        background: var(--system-color-orange);
+        inset-inline-start: var(--deco-pos, calc(50% - 50.5px));
     }
 
     footer a {
@@ -306,11 +333,18 @@ body {
     footer>p:last-of-type {
         text-transform: capitalize;
     }
-
+    nav {
+        --min-padding: 1.5em 0;
+        border-image: linear-gradient(hsla(0, 3%, 75%, 0.4), hsla(0, 3%, 75%, 0.4)) 0 0 20%  / 1px / 0 var(--divider-outset, 50vi) ;
+    }
 
     @media screen and (min-width: 480px) {
+        nav {
+            --divider-outset: 0;
+        }
         footer {
-            --deco-pos: left 1.5em top 0%;
+            --deco-pos: 0;
+            --min-padding: 1.5em 0;
             --col-dir: row;
             --g-template: "area1 area1 area1" "area2 area2 area2" "area3 area3 area3" "area4 area4 area5" / 1fr 1fr max-content;
 
@@ -318,11 +352,12 @@ body {
     }
 
     @media screen and (min-width: 768px) {
+        .xl-remove {
+            display: none;
+        }
+
         footer {
-            --h-pad: clamp(1.5em, 7vw, 165px);
-            --deco-pos: left var(--h-pad) top 0%;
             --g-template: "area1 area2 area2" "area3 area3 ." "area3 area3 area5" "area4 area4 .";
-            --min-padding: 1.5em var(--h-pad);
         }
 
         footer>ul {

@@ -1,11 +1,17 @@
 import sprites from "../assets/icons.svg?url";
+
+function Logo() {
+    return (
+        <svg width="143" height="25">
+            <title>Audiophile Logo</title>
+            <use href={sprites + "#logo"} />
+        </svg>
+    );
+}
 function Footer() {
     return (
         <footer>
-            <svg width="143" height="25">
-                <title>Audiophile Logo</title>
-                <use href={sprites + "#logo"} />
-            </svg>
+            <Logo />
             <ul class="column" role="list">
                 <li><a href="">home</a></li>
                 <li><a href="">headphones</a></li>
@@ -45,4 +51,4 @@ function Footer() {
         </footer>
     );
 }
-export default Footer;
+export {Footer, Logo};
