@@ -2,6 +2,7 @@ import homeEarphone from "../assets/images/earphone.png";
 import homeSpeaker from "../assets/images/zx9 speaker.png";
 import homeHeadpone from "../assets/images/headphone.png";
 import newProduct from "../assets/images/headphone-banner.png";
+import brand from "../assets/images/description-image.png";
 
 
 
@@ -36,5 +37,12 @@ export const homeAssets = Object.freeze({
         alt: "a black headphone with black leather on both sound outputs having controls on both sides",
         width: 375,
         height: 463,
+    },
+    brand: {
+        source: brand,
+        alt: "a white young man sitting on a café and relaxing with music",
+        width: 327,
+        height: 300,
     }
+
 });

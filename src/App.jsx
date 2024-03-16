@@ -1,5 +1,5 @@
 import styles from './App.module.css';
-import { Categories, FeaturedArticle, Footer, Header, homeAssets } from "./components";
+import { BrandDescription, Categories, FeaturedArticle, Footer, Header, homeAssets } from "./components";
 
 function App() {
     const { hero } = homeAssets;
@@ -20,6 +20,7 @@ function App() {
             <main class="stack">
                 <Categories />
                 <FeaturedArticle classValue={styles["f-product"]} />
+                <BrandDescription />
             </main>
             <Footer />
         </>
