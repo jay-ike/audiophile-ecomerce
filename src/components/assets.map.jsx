@@ -1,6 +1,7 @@
 import homeEarphone from "../assets/images/earphone.png";
 import homeSpeaker from "../assets/images/zx9 speaker.png";
 import homeHeadpone from "../assets/images/headphone.png";
+import newProduct from "../assets/images/headphone-banner.png";
 
 
 
@@ -27,4 +28,13 @@ export const categoryAssets = Object.freeze({
         link: ""
     },
 
+});
+
+export const homeAssets = Object.freeze({
+    hero: {
+        source: newProduct,
+        alt: "a black headphone with black leather on both sound outputs having controls on both sides",
+        width: 375,
+        height: 463,
+    }
 });

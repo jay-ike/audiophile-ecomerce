@@ -146,6 +146,13 @@ body {
         font-weight: 700;
     }
 
+    i {
+        color: var(--idiomatic-clr, var(--system-color-orange));
+        letter-spacing: var(--idomatic-spacing, inherit);
+        text-transform: uppercase;
+        font-style: normal;
+    }
+
     img:where(.categories *) {
         border-image: radial-gradient(hsla(0, 0%, 0%, 0.4) 15%, #0000 70%) var(--s, 0% 50% 100%) / 50% /0 15px 20px;
     }
@@ -323,11 +330,6 @@ body {
         block-size: 4px;
         background: var(--system-color-orange);
         inset-inline-start: var(--deco-pos, calc(50% - 50.5px));
-    }
-
-    footer a {
-        text-transform: uppercase;
-        font-weight: 700;
     }
 
     footer>p:last-of-type {

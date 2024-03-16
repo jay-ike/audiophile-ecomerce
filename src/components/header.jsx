@@ -35,6 +35,7 @@ function Header(props) {
                     </svg>
                 </a>
             </nav>
+            {props.children}
         </header>
     );
 }
