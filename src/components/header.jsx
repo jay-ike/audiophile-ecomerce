@@ -22,14 +22,6 @@ const getCartState = (oldItems, newItems) => (
         : "added"
 );
 
-const observer = new ResizeObserver(function(entries) {
-    entries.forEach(function (entry) {
-        if (entry.borderBoxSize[0].inlineSize >= 768) {
-            delete document.documentElement.dataset.menuOpened;
-        }
-    });
-});
-
 function handleAnimation(event) {
     const { target } = event;
     if (event.animationName === "jiggle") {
@@ -39,8 +31,16 @@ function handleAnimation(event) {
 
 function Header(props) {
     const links = ["home", "headphones", "speakers", "earphones"];
-    const [state, { toggleMenu }] = getNavContext();
+    const [state, { closeMenu, toggleMenu }] = getNavContext();
     const components = {};
+    const observer = new ResizeObserver(function(entries) {
+        entries.forEach(function(entry) {
+            if (entry.borderBoxSize[0].inlineSize >= 768) {
+                closeMenu();
+                delete document.documentElement.dataset.menuOpened;
+            }
+        });
+    });
 
     createEffect(function(oldState) {
         let newState = oldState ?? {};
@@ -57,7 +57,7 @@ function Header(props) {
         return oldState;
     });
 
-    onMount(function () {
+    onMount(function() {
         observer.observe(document.documentElement);
     });
     return (

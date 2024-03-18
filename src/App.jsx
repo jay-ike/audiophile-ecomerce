@@ -9,13 +9,29 @@ import {
     homeAssets
 } from "./components";
 
+const sectionContents = {
+    mainProduct: {
+        classValue: styles["main-product"],
+        content: "Upgrade to premium speakers that are phenomenally built to deliver truly remarkable sound.",
+        heading: "ZX9 SPEAKER",
+        image: homeAssets.featuredProduct,
+        link: ""
+    },
+    secondProduct: {
+        classValue: styles["product-2"],
+        heading: "ZX7 SPEAKER",
+        image: homeAssets.speaker,
+        link: ""
+    }
+};
+
 function App() {
     const { hero } = homeAssets;
     return (
         <NavProvider>
             <Header>
                 <main class={styles["hero"]}>
-                    <img src={hero.source} alt={hero.alt} width={hero.width} height={hero.height} />
+                    <img {...hero} />
                     <div class="column">
                         <i>new product</i>
                         <h1>XX99 Mark II
@@ -27,7 +43,8 @@ function App() {
             </Header>
             <main class="stack">
                 <Categories />
-                <FeaturedArticle classValue={styles["f-product"]} />
+                <FeaturedArticle {...sectionContents.mainProduct}/>
+                <FeaturedArticle {...sectionContents.secondProduct}/>
                 <BrandDescription />
             </main>
             <Footer />

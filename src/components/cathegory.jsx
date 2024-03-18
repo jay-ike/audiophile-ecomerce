@@ -11,7 +11,7 @@ function mapper(metadata) {
 function Category(props) {
     return (
         <article class="box">
-            <img src={props.source} alt={props.alt} width={props.width} height={props.height} />
+            <img src={props.src} alt={props.alt} width={props.width} height={props.height} />
             <h3>{props.name}</h3>
             <a href={props.link}>
                 shop
