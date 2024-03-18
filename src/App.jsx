@@ -1,10 +1,18 @@
 import styles from './App.module.css';
-import { BrandDescription, Categories, FeaturedArticle, Footer, Header, homeAssets } from "./components";
+import {
+    BrandDescription,
+    Categories,
+    FeaturedArticle,
+    Footer,
+    Header,
+    NavProvider,
+    homeAssets
+} from "./components";
 
 function App() {
     const { hero } = homeAssets;
     return (
-        <>
+        <NavProvider>
             <Header>
                 <main class={styles["hero"]}>
                     <img src={hero.source} alt={hero.alt} width={hero.width} height={hero.height} />
@@ -23,7 +31,7 @@ function App() {
                 <BrandDescription />
             </main>
             <Footer />
-        </>
+        </NavProvider>
     );
 }
 

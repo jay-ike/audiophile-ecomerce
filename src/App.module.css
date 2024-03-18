@@ -59,7 +59,13 @@ a:where(.f-product *, .hero *) {
     }
 
     & > div {
-        background-image: radial-gradient(circle at center, hsla(0, 0%, 0%, 0.2) 75%, #0000);
+        border-image: var(--bdr-img, radial-gradient(hsla(0, 0%, 0%, 0.3), hsla(0, 0%, 0%, 0.3))  1 fill / 50% / 2rem 0);
+    }
+    & > img {
+        max-block-size: var(--img-h, 408px);
+        min-inline-size: var(--img-w, 100%);
+        object-fit: cover;
+        object-position: 48% 35%;
     }
 
 }
@@ -84,6 +90,9 @@ a:where(.f-product *, .hero *) {
     .hero {
         --col-align: start;
         --min-padding: 1.5em 0;
+        --img-w: auto;
+        --img-h: auto;
+        --bdr-img: none;
         text-align: start;
         display: flex;
         flex-flow: row-reverse nowrap;
