@@ -39,6 +39,9 @@ function Header(props) {
                 closeMenu();
                 delete document.documentElement.dataset.menuOpened;
             }
+            if (entry.borderBoxSize[0].inlineSize < 768) {
+                document.documentElement.dataset.menuOpened = state().menuOpened;
+            }
         });
     });
 
@@ -61,7 +64,7 @@ function Header(props) {
         observer.observe(document.documentElement);
     });
     return (
-        <header>
+        <>
             <nav class="row box">
                 <button aria-label={(state().menuOpened ? "close" : "open") + " the menu"} class="xl-remove no-padding" aria-pressed={state().menuOpened} onClick={toggleMenu}>
                     <svg width="24" height="24">
@@ -81,12 +84,13 @@ function Header(props) {
                 </ul>
                 <a ref={components.cart} href="" data-cart="idle" onAnimationEnd={handleAnimation}>
                     <svg width="24" height="24">
+                        <title>a shopping cart illustration</title>
                         <use href={assets + "#cart"} />
                     </svg>
                 </a>
             </nav>
             {props.children}
-        </header>
+        </>
     );
 }
 

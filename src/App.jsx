@@ -22,6 +22,12 @@ const sectionContents = {
         heading: "ZX7 SPEAKER",
         image: homeAssets.speaker,
         link: ""
+    },
+    thirdProduct: {
+        classValue: styles["third-product"],
+        heading: "yx1 earphones",
+        image: homeAssets.earphone,
+        link: ""
     }
 };
 
@@ -30,7 +36,9 @@ function App() {
     return (
         <NavProvider>
             <Header>
-                <main class={styles["hero"]}>
+            </Header>
+            <main class="stack">
+                <header class={styles["hero"]} role='banner'>
                     <img {...hero} />
                     <div class="column">
                         <i>new product</i>
@@ -39,12 +47,11 @@ function App() {
                         <p>Experience natural, lifelike audio and exceptional build quality made for the passionate music enthusiast.</p>
                         <a href="" class="box">see product</a>
                     </div>
-                </main>
-            </Header>
-            <main class="stack">
+                </header>
                 <Categories />
-                <FeaturedArticle {...sectionContents.mainProduct}/>
-                <FeaturedArticle {...sectionContents.secondProduct}/>
+                <FeaturedArticle {...sectionContents.mainProduct} />
+                <FeaturedArticle {...sectionContents.secondProduct} />
+                <FeaturedArticle {...sectionContents.thirdProduct} />
                 <BrandDescription />
             </main>
             <Footer />

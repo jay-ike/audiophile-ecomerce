@@ -1,7 +1,7 @@
 import homeEarphone from "../assets/images/earphone.png?format=webp&as=metadata&w=79";
-import homeSpeaker from "../assets/images/zx9 speaker.png?format=webp&as=metadata&w=84;175";
+import homeSpeaker from "../assets/images/zx9-speaker.png?format=webp&as=metadata&w=84;175";
 import homeHeadpone from "../assets/images/headphone.png?format=webp&as=metadata&w=79";
-import newProduct from "../assets/images/headphone-banner.png?format=webp&as=metadata&w=375";
+import newProduct from "../assets/images/headphone-banner.png?format=webp&as=metadata&w=327&fit=cover";
 import brand from "../assets/images/description-image.png?format=webp&as=metadata&w=327&lossless=true";
 import sectionSpeaker from "../assets/images/section-speaker.png?format=webp&as=metadata&w=325";
 import sectionEarphone from "../assets/images/section-earphone.png?format=webp&as=metadata&w=327";

@@ -29,13 +29,14 @@
 
 :is(.main-product, .product-2) {
     --radius: .5rem;
+    isolation: isolate;
 
     & a {
         --radius: initial;
     }
 }
 
-a:where(.main-product *, .hero *, .product-2 *) {
+a:where(:is(.main-product, .hero, .product-2, .third-product) *) {
     --min-padding: .75rem;
     --color-fill: var(--link-fill, var(--system-color-orange));
     display: inline-block;
@@ -57,16 +58,17 @@ a:where(.main-product *, .hero *, .product-2 *) {
         place-self: center;
     }
 
-    &>img {
-        max-block-size: var(--img-h, 408px);
-        min-inline-size: var(--img-w, 100%);
-        object-fit: cover;
-        object-position: var(--img-position, 48% 35%);
-    }
+}
+
+:is(.hero, .product-2, .third-product) > img {
+    max-block-size: var(--img-h, 408px);
+    min-inline-size: var(--img-w, 100%);
+    object-fit: cover;
+    object-position: var(--img-position, 47% 41%);
+    aspect-ratio: 1;
 }
 
 .product-2 {
-    --min-padding: 0;
     --img-position: 20% 80%;
     --img-w: min(1110px, 100vi);
     --img-h: 320px;
@@ -80,12 +82,32 @@ a:where(.main-product *, .hero *, .product-2 *) {
 }
 
 :is(.product-2, .third-product) {
+    --min-padding: 0;
     --link-fill: transparent;
     --link-hover-fill: var(--system-color-dark);
     --link-hover-clr: var(--system-color-pale);
 
     & a {
+        --outline-clr: var(--system-color-dark);
         border: solid 2px var(--link-hover-fill);
+    }
+}
+
+.third-product {
+    --img-h: 200px;
+    --img-position: left 50% bottom 48%;
+
+    & > * {
+        flex-grow: 2;
+        border-radius: .5rem;
+    }
+    & > div {
+        display: flex;
+        flex-flow: column nowrap;
+        justify-content: center;
+        align-items: start;
+        padding: 2.5em 1.5em;
+        background-color: hsl(0, 0%, 94%);
     }
 }
 
@@ -94,9 +116,10 @@ a:where(.main-product *, .hero *, .product-2 *) {
     --idomatic-spacing: .5em;
     --col-align: center;
     text-align: center;
+    border-image: var(--section-bdr-img);
 
     &>div {
-        border-image: var(--bdr-img, radial-gradient(hsla(0, 0%, 0%, 0.3), hsla(0, 0%, 0%, 0.3)) 1 fill / 0/ 2rem 0);
+        border-image: var(--bdr-img, radial-gradient(hsla(0, 0%, 0%, 0.3), hsla(0, 0%, 0%, 0.3)) 1 fill / 0/ 1.5em 0);
     }
 }
 
@@ -121,13 +144,18 @@ a:where(.main-product *, .hero *, .product-2 *) {
     .hero {
         --col-align: start;
         --min-padding: 1.5em 0;
-        --img-w: auto;
-        --img-h: auto;
+        --img-w: 408px;
         --bdr-img: none;
         text-align: start;
         display: flex;
         flex-flow: row-reverse nowrap;
         gap: 1rem;
+    }
+    .third-product {
+        --col-dir: row;
+        --img-w: 50%;
+        --img-h: 320px;
+        --f-size-fluid: 3cqi;
     }
 
 }

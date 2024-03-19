@@ -12,6 +12,7 @@ typography;
 }
 
 body {
+    --section-bdr-img: linear-gradient(var(--system-color-dark), var(--system-color-dark)) 1 fill / 0 / 1.5em 100vi 0;
     margin: 0;
     font-family: "Just", -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
         'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
@@ -185,11 +186,36 @@ body {
         --outline-clr: var(--system-color-dark);
         --icon-fill: var(--system-color-orange);
         --c-space: 2.5rem;
+        padding: 2.5em 1.5em 1.5em;
+        background-color: var(--system-color-white);
+        inline-size: var(--size, 100%);
 
         & a::before {
             content: "";
             position: absolute;
             inset: 0;
+        }
+
+
+    }
+    [data-menu-opened] .categories {
+        position: fixed;
+        transform: translateX(var(--translation, -50vb));
+        opacity: 0;
+    }
+
+    [data-menu-opened="true"] .categories {
+        --translation: none;
+        --size: 100vi;
+        opacity: 1;
+        z-index: 2;
+        inset: 3rem 0 auto;
+
+        &::before {
+            content: "";
+            position: absolute;
+            inset: 100% 0 -100vb;
+            background-color: hsla(0, 0%, 0%, 0.4);
         }
     }
 
@@ -211,7 +237,7 @@ body {
     }
 
     [data-cart] {
-        margin-inline-start: auto;
+        margin-inline-start: var(--cart-margin, auto);
         position: relative;
 
         &:is([data-items])::before {
@@ -392,12 +418,25 @@ body {
 
     nav {
         --min-padding: 1.5em 0;
-        border-image: linear-gradient(hsla(0, 3%, 75%, 0.4), hsla(0, 3%, 75%, 0.4)) 0 0 20% / 1px / 0 var(--divider-outset, 50vi);
+        --color-text: var(--system-color-pale);
+        border-image: var(--section-bdr-img);
+        position: sticky;
+        inset-block-start: 0;
+        z-index: 3;
+        isolation: isolate;
+
+        &::after {
+            content: "";
+            position: absolute;
+            background-color: hsla(0, 0%, 100%, 0.4);
+            block-size: 1px;
+            inset: auto var(--deco-outset, -50vi) 0;
+        }
     }
 
     @media screen and (min-width: 480px) {
         nav {
-            --divider-outset: 0;
+            --deco-outset: 0;
         }
 
         footer {
@@ -421,6 +460,10 @@ body {
         footer>ul {
             justify-self: end;
         }
+        nav {
+            --i-alignment: space-between;
+            --cart-margin: 0;
+        }
 
     }
 }
@@ -432,6 +475,12 @@ body {
     }
     :is([data-cart="added"], [data-cart="reduced"]):where([data-items])::before {
         animation: jiggle .35s cubic-bezier(.25, .1, .3, 1.5) forwards;
+    }
+    a {
+        transition: all 0.35s ease-out;
+    }
+    .categories {
+        transition: opacity 0.1s ease-out, transform 0.35s 0.1s ease-out;
     }
 }
 
