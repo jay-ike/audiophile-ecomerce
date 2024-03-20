@@ -13,11 +13,8 @@ function Category(props) {
         <article class="box">
             <img src={props.src} alt={props.alt} width={props.width} height={props.height} />
             <h3>{props.name}</h3>
-            <a href={props.link}>
+            <a href={props.link} data-icon-position="end" data-icon="arrow_right">
                 shop
-                <svg width="24" height="24">
-                    <use href={assets + "#right_arrow"} />
-                </svg>
             </a>
         </article>
     );

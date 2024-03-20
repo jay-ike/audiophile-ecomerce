@@ -24,26 +24,26 @@ function Footer() {
             <p>copyright 2024. all rights reserved</p>
             <ul class="row" role="list">
                 <li>
-                    <a href="" aria-label="follow us on Facebook">
+                    <a href="" aria-label="follow us on Github">
                         <svg width="24" height="24">
-                            <title>Facebook Logo</title>
-                            <use href={sprites + "#facebook"} />
+                            <title>Github Logo</title>
+                            <use href={sprites + "#github"} />
+                        </svg>
+                    </a>
+                </li>
+                <li>
+                    <a href="" aria-label="follow us on Mastodon">
+                        <svg width="24" height="24">
+                            <title>Mastodon Logo</title>
+                            <use href={sprites + "#mastodon"} />
                         </svg>
                     </a>
                 </li>
                 <li>
                     <a href="" aria-label="follow us on Twitter">
                         <svg width="24" height="24">
-                            <title>Twitter Logo</title>
+                            <title>X (formerly Twitter) Logo</title>
                             <use href={sprites + "#twitter"} />
-                        </svg>
-                    </a>
-                </li>
-                <li>
-                    <a href="" aria-label="follow us on Instagram">
-                        <svg width="24" height="24">
-                            <title>Instagram Logo</title>
-                            <use href={sprites + "#instagram"} />
                         </svg>
                     </a>
                 </li>
@@ -51,4 +51,4 @@ function Footer() {
         </footer>
     );
 }
-export {Footer, Logo};
+export { Footer, Logo };

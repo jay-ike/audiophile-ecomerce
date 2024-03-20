@@ -142,6 +142,32 @@ body {
 }
 
 @layer utilities {
+
+
+    [data-icon-position="start"]::before,
+    [data-icon-position="end"]::after {
+        content: "";
+        min-inline-size: var(--icon-size, 1.5em);
+        aspect-ratio: var(--icon-ratio, 1);
+        display: inline-block;
+        background-color: var(--icon-fill, currentColor);
+        transform: var(--icon-transform, none);
+        clip-path: var(--icon-clip, none);
+        gap: .25em;
+    }
+
+    [data-icon-position="start"]:where(:enabled, a):where(:hover, :focus-visible)::before,
+    [data-icon-position="end"]:where(a, :enabled):where(:hover, :focus-visible)::after {
+        --icon-fill: var(--icon-fill-hover, currentColor);
+        --icon-transform: var(--icon-hoverTransform, inherit);
+    }
+
+    [data-icon="arrow_right"] {
+        --icon-clip: url(#arrow_left);
+        --icon-transform: rotate(180deg);
+        --icon-hoverTransform: rotate(180deg) translateX(0.5em);
+    }
+
     a {
         --outline-style: dashed;
         text-transform: uppercase;
@@ -198,10 +224,12 @@ body {
 
 
     }
+
     [data-menu-opened] .categories {
         position: fixed;
         transform: translateX(var(--translation, -50vb));
         opacity: 0;
+        visibility: hidden;
     }
 
     [data-menu-opened="true"] .categories {
@@ -313,7 +341,7 @@ body {
 @layer theme {
     :root {
         --system-color-dark: hsl(0, 0%, 6%);
-        --system-color-orange: hsl(22, 65%, 57%);
+        --system-color-orange: hsl(21, 71%, 44%);
         --system-color-paleOrange: hsl(21, 94%, 75%);
         --system-color-pale: hsl(0, 0%, 98%);
         --system-color-gray: hsl(0, 0%, 95%);
@@ -392,7 +420,7 @@ body {
     }
 
     :is(footer, header) {
-        --color-text: var(--system-color-pale);
+        --color-text: var(--system-color-white);
         --color-fill: var(--system-color-dark);
     }
 
@@ -460,6 +488,7 @@ body {
         footer>ul {
             justify-self: end;
         }
+
         nav {
             --i-alignment: space-between;
             --cart-margin: 0;
@@ -473,23 +502,31 @@ body {
         --h-transition: stroke-dasharray .6s cubic-bezier(.25, .1, .3, 1.5),
             stroke-dashoffset .6s cubic-bezier(.25, .1, .3, 1.5);
     }
+
     :is([data-cart="added"], [data-cart="reduced"]):where([data-items])::before {
         animation: jiggle .35s cubic-bezier(.25, .1, .3, 1.5) forwards;
     }
-    a {
+
+    a, [data-icon-position="start"]::before, [data-icon-position="end"]::after {
         transition: all 0.35s ease-out;
     }
+
     .categories {
         transition: opacity 0.1s ease-out, transform 0.35s 0.1s ease-out;
     }
 }
 
 @keyframes jiggle {
-    20%, 60%, 80% {
+
+    20%,
+    60%,
+    80% {
         transform: scale(calc(1 + var(--delta, 0.4)));
     }
-    from, 40%, to {
+
+    from,
+    40%,
+    to {
         transform: scale(1);
     }
 }
-
