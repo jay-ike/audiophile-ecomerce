@@ -42,7 +42,7 @@ function Footer() {
                 <li>
                     <a href="" aria-label="follow us on Twitter">
                         <svg width="24" height="24">
-                            <title>X (formerly Twitter) Logo</title>
+                            <title>X formerly Twitter Logo</title>
                             <use href={sprites + "#twitter"} />
                         </svg>
                     </a>
