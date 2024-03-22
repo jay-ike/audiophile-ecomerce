@@ -83,18 +83,25 @@ function Header(props) {
             <Show when={state().preventCartReveal === false}>
                 <div class="cart-modal" role="dialog" aria-label="list of items in your cart">
                     <button class="self-end no-padding" data-icon-theme="neutral" data-icon-position="end" data-icon="cross" aria-label="close the modal" onClick={toggleCartModal}></button>
-                    <div class="segragator">
-                        <h4>Cart ({state().cartItems.allItems()})</h4>
-                        <Show when={state().cartItems.allItems() > 0}>
-                            <button class="reset-btn">Remove all</button>
-                        </Show>
-                    </div>
                     <form action="" class="column">
-                        <dl class="segragator">
+                        <div class="segragator not-empty-sibling">
+                            <h4>Cart ({state().cartItems.allItems()})</h4>
+                            <button class="reset-btn">Remove all</button>
+                        </div>
+                        <div class="not-empty"></div>
+                        <dl class="segragator not-empty-sibling">
                             <dt class="caption-text">total</dt>
                             <dd><strong>$ 2000</strong></dd>
                         </dl>
-                        <button type="button" class="btn-primary">checkout</button>
+                        <div class="center empty">
+                            <svg width="128" height="128">
+                                <title>illustration of an empty box</title>
+                                <use href={assets + "#empty"} />
+                            </svg>
+                            <h5>There is no item in your cart</h5>
+                            <p>To see your items here you should go to a product's page and click the <strong>"add to cart"</strong> button</p>
+                        </div>
+                        <button type="button" class="btn-primary not-empty-sibling">checkout</button>
                     </form>
                 </div>
             </Show>
