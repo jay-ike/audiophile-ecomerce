@@ -59,6 +59,7 @@ function Header(props) {
         }
         if (state().cartActive) {
             document.documentElement.dataset.cartActive = state().cartActive;
+            components.scope.enterScope();
         } else {
             delete document.documentElement.dataset.cartActive;
         }
@@ -81,29 +82,31 @@ function Header(props) {
     return (
         <>
             <Show when={state().preventCartReveal === false}>
-                <div class="cart-modal" role="dialog" aria-label="list of items in your cart">
-                    <button class="self-end no-padding" data-icon-theme="neutral" data-icon-position="end" data-icon="cross" aria-label="close the modal" onClick={toggleCartModal}></button>
-                    <form action="" class="column">
-                        <div class="segragator not-empty-sibling">
-                            <h4>Cart ({state().cartItems.allItems()})</h4>
-                            <button class="reset-btn">Remove all</button>
-                        </div>
-                        <div class="not-empty"></div>
-                        <dl class="segragator not-empty-sibling">
-                            <dt class="caption-text">total</dt>
-                            <dd><strong>$ 2000</strong></dd>
-                        </dl>
-                        <div class="center empty">
-                            <svg width="128" height="128">
-                                <title>illustration of an empty box</title>
-                                <use href={assets + "#empty"} />
-                            </svg>
-                            <h5>There is no item in your cart</h5>
-                            <p>To see your items here you should go to a product's page and click the <strong>"add to cart"</strong> button</p>
-                        </div>
-                        <button type="button" class="btn-primary not-empty-sibling">checkout</button>
-                    </form>
-                </div>
+                <focus-scope ref={components.scope}>
+                    <div class="cart-modal" role="dialog" aria-label="list of items in your cart">
+                        <button type="button" class="self-end no-padding" data-icon-theme="neutral" data-icon-position="end" data-icon="cross" aria-label="close the modal" onClick={toggleCartModal}></button>
+                        <form action="" class="column">
+                            <div class="segragator not-empty-sibling">
+                                <h4>Cart ({state().cartItems.allItems()})</h4>
+                                <button class="reset-btn">Remove all</button>
+                            </div>
+                            <div class="not-empty"></div>
+                            <dl class="segragator not-empty-sibling">
+                                <dt class="caption-text">total</dt>
+                                <dd><strong>$ 2000</strong></dd>
+                            </dl>
+                            <div class="center empty">
+                                <svg width="128" height="128">
+                                    <title>illustration of an empty box</title>
+                                    <use href={assets + "#empty"} />
+                                </svg>
+                                <h5>There is no item in your cart</h5>
+                                <p>To see your items here you should go to a product's page and click the <strong>"add to cart"</strong> button</p>
+                            </div>
+                            <button type="button" class="btn-primary not-empty-sibling">checkout</button>
+                        </form>
+                    </div>
+                </focus-scope>
             </Show>
             <nav class="row box">
                 <button aria-label={(state().menuOpened ? "close" : "open") + " the menu"}
