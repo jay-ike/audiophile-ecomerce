@@ -1,9 +1,11 @@
 /* @refresh reload */
 import { render } from 'solid-js/web';
 import FocusScope from './components/focus-scope';
+import Stepper from './components/step-by-step';
 
 import './index.css';
 import App from './App';
+import CheckoutPage from './Checkout';
 
 const root = document.getElementById('root');
 
@@ -14,5 +16,6 @@ if (import.meta.env.DEV && !(root instanceof HTMLElement)) {
 }
 
 FocusScope.define();
+Stepper.define();
 
-render(() => <App />, root);
+render(() => <CheckoutPage />, root);

@@ -1,7 +1,7 @@
 @layer resets, layout,
+typography,
 utilities,
-theme,
-typography;
+theme;
 
 @font-face {
     font-family: "Just";
@@ -20,10 +20,11 @@ body {
     line-height: 1.5;
     letter-spacing: .01em;
     word-spacing: 0.05em;
+    accent-color: var(--system-color-orange);
 }
 
 @layer typography {
-    :is(h1, h2, h3, h4, h5, p, .fluid-type, footer a) {
+    :is(h1, h2, h3, h4, h5, p, legend, .fluid-type, footer a) {
         font-size: clamp(var(--f-size, 1rem) * clamp(0.5, 1 - var(--f-size-diff, 0.3), 0.9),
                 var(--f-size-fluid, var(--default-fluid, 3vw)),
                 var(--f-size, 1rem));
@@ -43,9 +44,10 @@ body {
         --f-size-diff: 0.45;
     }
 
-    :is(h3, h4) {
+    :is(h3, h4, legend) {
         --f-size: 1.75rem;
     }
+
     h5 {
         --f-size: 1.125rem;
     }
@@ -133,9 +135,20 @@ body {
         scroll-margin-block-end: 8vh;
     }
 
-    input:where([type="text"]) {
+    input:where([type="text"], [type="email"], [type="tel"]) {
+        --outline-offset: .05em;
         padding: 0.75em;
+        line-height: inherit;
         caret-color: var(--system-color-orange, currentColor);
+        border-radius: .5rem;
+        border: .1em solid var(--bdr-clr, hsl(0, 0%, 81%));
+        inline-size: 100%;
+        font-weight: 500;
+
+        &:focus-visible:not(:is(:invalid):not([data-new])) {
+            --bdr-clr: var(--system-color-orange);
+            --outline-clr: var(--system-color-orange);
+        }
     }
 
     :is(a, button, input):focus:not(:focus-visible) {
@@ -149,7 +162,9 @@ body {
 }
 
 @layer utilities {
-
+    .capitalize {
+        text-transform: capitalize;
+    }
 
     :is(.not-empty:empty, .not-empty:empty ~ .not-empty-sibling, form:has(> .not-empty:empty) > .not-empty-sibling) {
         display: none;
@@ -168,6 +183,8 @@ body {
         font-weight: bold;
         letter-spacing: 1px;
         text-transform: uppercase;
+        touch-action: manipulation;
+        user-select: none;
     }
 
     :where(.reset-btn) {
@@ -211,6 +228,18 @@ body {
         --icon-clip: url(#minus);
     }
 
+    :is(.input-step, [data-payment="mobile"]) {
+        container: input-step /inline-size;
+
+        & label {
+            text-transform: capitalize;
+        }
+
+        &>div:not(.column, [class$="grid"]) {
+            display: flex;
+            flex-flow: column-reverse nowrap;
+        }
+    }
 
     a {
         --outline-style: dashed;
@@ -218,7 +247,7 @@ body {
         font-weight: 700;
     }
 
-    i {
+    :is(i, legend) {
         color: var(--idiomatic-clr, var(--system-color-orange));
         letter-spacing: var(--idomatic-spacing, inherit);
         text-transform: uppercase;
@@ -406,8 +435,45 @@ body {
         max-inline-size: min(95vi, 1110px);
         margin-inline: auto;
     }
+    .pm-grid {
+        --g-template: "area1" "area2" "area3";
+        --min-padding: 1rem;
+        --radius: .5rem;
+        --r-space: 1rem;
+
+        & label {
+            border: 2px solid var(--bdr-fill,var(--bdr-clr, var(--system-color-gray)));
+
+            &:where(:hover, :has(input[type="radio"]:focus-visible)) {
+                --bdr-clr: var(--system-color-paleOrange);
+            }
+        }
+
+        & input[type="radio"] {
+            appearance: none;
+            inline-size: 1.125rem;
+            aspect-ratio: 1;
+            border-radius: 50%;
+            border: 2px solid var(--system-color-gray);
+            background-image: radial-gradient(var(--bdr-fill, #0000) 50%, #0000 50%);
+
+            :where(&:checked, label:has(&:checked)) {
+                --bdr-fill: var(--system-color-orange);
+            }
+        }
+    }
+    [data-payment="mobile"]:not([data-mobile-selected]  *) {
+        display: none;
+    }
+    [data-payment="cash"]:not([data-cash-selected]  *) {
+        display: none;
+    }
 
     @media screen and (min-width: 480px) {
+        .pm-grid {
+            --g-template: "area1 area1" "area2 area3";
+        }
+
         .categories {
             --col-dir: row;
             --c-space: 10px;
@@ -507,6 +573,23 @@ body {
         margin-inline-start: auto;
     }
 
+    step-by-step {
+        --c-space: 1em;
+        position: relative;
+        display: block;
+
+        &>* {
+            transform: translateX(calc((var(--i) - var(--current)) * 100%));
+        }
+
+        &>.step-out {
+            position: fixed;
+            z-index: -1;
+            visibility: hidden;
+            opacity: 0;
+        }
+    }
+
     .center {
         display: grid;
         place-items: center;
@@ -521,7 +604,7 @@ body {
         border-radius: var(--radius, 0);
     }
 
-    :is(.template-grid, footer) {
+    :is([class$="grid"], footer) {
         --col-align: center;
         display: grid;
         grid-template: var(--g-template);
@@ -612,7 +695,7 @@ body {
         }
 
         footer {
-            --g-template: "area1 area2 area2" "area3 area3 ." "area3 area3 area5" "area4 area4 .";
+            --g-template: "area1 area2 area2" "area3 area3 ." "area3 area3 area5" "area4 area4 ." / 1fr 1fr;
         }
 
         footer>ul {
@@ -646,6 +729,11 @@ body {
     :is(.categories, .cart-modal) {
         transition: opacity 0.1s ease-out, transform 0.35s 0.1s cubic-bezier(.25, .1, .3, 1.5);
     }
+
+    step-by-step>* {
+        transition: transform .35s ease-out;
+    }
+
 }
 
 @keyframes jiggle {
