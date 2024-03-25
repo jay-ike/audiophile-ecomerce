@@ -1,6 +1,13 @@
 import { createContext, createSignal, useContext } from "solid-js";
+import {categoryAssets} from "./assets.map.jsx";
 
 const NavContext = createContext({ items: 0, opened: false });
+const fakeItems = [["iw209342", {
+    image: categoryAssets.earphones,
+    name: "YX1",
+    price: "$ 539",
+    count: 3
+}]];
 
 function storeUpdater(prop, computed) {
     return function(val) {
@@ -54,7 +61,10 @@ function Cart(entries = []) {
     }
 
     function allItems() {
-        return Object.values(content).reduce(
+        return Object.values(content);
+    }
+    function itemsCount() {
+        return allItems().reduce(
             (acc, val) => acc + (val?.count ?? 0),
             0
         );
@@ -64,8 +74,12 @@ function Cart(entries = []) {
             value: addItem,
             writable: false
         },
-        allItems: {
+         allItems: {
             value: allItems,
+            writable: false
+        },
+        itemsCount: {
+            value: itemsCount,
             writable: false
         },
         removeItem: {
@@ -80,7 +94,7 @@ function NavProvider(props) {
     const [state, setState] = createSignal(
         {
             cartActive: props.cartActive ?? false,
-            cartItems: props.cartItems ?? new Cart(),
+            cartItems: props.cartItems ?? new Cart(fakeItems),
             menuOpened: props.menuOpened ?? false,
             preventCartReveal: props.hideCart ?? false
         }

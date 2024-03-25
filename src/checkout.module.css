@@ -1,3 +1,7 @@
+[id="root"] {
+    background-color: var(--system-color-pale);
+}
+
 .step-indicator {
     --deco-size: 1.7em;
     --bdr-width: 2px;
@@ -8,6 +12,7 @@
 }
 
 .step-indicator p {
+    --f-size: .8rem;
     position: var(--content-position, absolute);
     clip-path: var(--content-clip, inset(50%));
 }
@@ -16,7 +21,7 @@
 .step-indicator> :not(.step-active ~ *) {
     --deco-color: var(--system-color-orange);
     --deco-bg: var(--deco-color);
-    --deco-colorText: #fafafa;
+    --deco-colorText: var(--system-color-white);
 }
 
 .step-indicator>* {
@@ -57,7 +62,7 @@
     background-color: var(--deco-bg, transparent);
 }
 
-.step-indicator > :not(.step-active ~ *, .step-active)::after {
+.step-indicator> :not(.step-active ~ *, .step-active)::after {
     --deco-size: 1.5rem;
     content: "";
     clip-path: url(#check-circle);
@@ -91,6 +96,48 @@
     text-transform: none;
 }
 
+.c-form {
+    --s-space: 1rem;
+    margin-block-end: 2rem;
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 1rem;
+
+    & :is(h1, h2) {
+        --f-size-diff: .5;
+        letter-spacing: 1px;
+    }
+
+    &>div {
+        --min-padding: 1em;
+        --radius: .5rem;
+        --color-fill: var(--system-color-white);
+        container: checkout / inline-size;
+    }
+}
+
+.c-recap {
+
+    & dt {
+        color: hsl(0, 0%, 43%);
+    }
+    & > div {
+        --s-space: var(--spacer, .5rem);
+        display: flex;
+        justify-content: space-between;
+
+        &:last-child {
+            --spacer: 1.5rem;
+            --clr: var(--system-color-orange);
+        }
+    }
+    & dd {
+        font-weight: bold;
+        color: var(--clr, inherit);
+
+    }
+}
+
 @media screen and (min-width: 480px) {
     .step-indicator {
         --content-clip: none;
@@ -99,7 +146,20 @@
 
 }
 
+@media screen and (min-width: 768px) {
+    .c-form {
+        display: grid;
+        grid-template-columns: 1.75fr 1fr;
+        min-block-size: 60lvb;
+
+        & > :last-child {
+            align-self: start;
+        }
+    }
+}
+
 @media (prefers-reduced-motion: no-preference) {
+
     .step-indicator li::before,
     .step-indicator li::after {
         transition: color .35s ease-in, clip-path .35s ease-out, background-color, .35s ease-out;

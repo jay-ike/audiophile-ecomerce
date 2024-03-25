@@ -1,5 +1,5 @@
-import { createSignal, For } from "solid-js";
-import { Header, NavProvider, getNavContext } from "./components";
+import { createSignal, For, onMount } from "solid-js";
+import { Footer, Header, NavProvider, getNavContext } from "./components";
 import icons from "./assets/icons.svg";
 import style from "./checkout.module.css";
 
@@ -23,7 +23,6 @@ const fieldsets = [
                 "label": "phone number",
                 metadata: { "type": "tel", "id": "s-tel", "name": "shippingPhone", "autocomplete": "tel", "data-new": "", "required": true, "placeholder": "ex. +237649383039", "pattern": "^\\+\\d{1,3}\\d{8,12}$" }
             },
-
         ]
     },
     {
@@ -48,22 +47,83 @@ const fieldsets = [
                 "label": "country",
                 metadata: { "type": "text", "id": "s-country", "name": "country", "autocomplete": "country-name", required: true, "data-new": "" }
             },
-
         ]
     }
-
 ];
 const steps = ["your informations", "the shipping address", "how will you pay ?"];
+const plural = (count) => (
+    count > 1
+        ? "s"
+        : ""
+);
 
 function Indicator(props) {
     return (
         <ul class={style["step-indicator"]}>
             <For each={props.steps}>
                 {
-                    (step, index) => <li {...(props.current() === index() ? {"class": style["step-active"]} : {}) }><p>{step}</p></li>
+                    (step, index) => <li {...(props.current() === index() ? { "class": style["step-active"] } : {})}><p>{step}</p></li>
                 }
             </For>
         </ul>
+    );
+}
+
+function Summary() {
+    const [navState, { hideCartModal }] = getNavContext();
+
+    onMount(function() {
+        hideCartModal();
+    });
+
+    return (
+        <div className="box column">
+            <h2>summary</h2>
+            <ul className="not-empty column">
+                <For each={navState().cartItems.allItems()}>
+                    {
+                        (item) => (
+                            <li className="item-grid">
+                                <h4>{item.name}</h4>
+                                <p>{item.price}</p>
+                                <span aria-label={item.count + " item" + plural(item.count)}>x{item.count}</span>
+                                <div className="img-box">
+                                    <img {...item.image} />
+                                </div>
+                            </li>
+                        )
+                    }
+                </For>
+            </ul>
+            <div class="center empty">
+                <svg width="128" height="128">
+                    <title>illustration of an empty box</title>
+                    <use href={icons + "#empty"} />
+                </svg>
+                <h5>There is no item in your cart</h5>
+                <p>To see your items here you should go to a product's page and click the <strong>"add to cart"</strong> button</p>
+            </div>
+
+            <dl class={style["c-recap"] + " not-empty-sibling stack"}>
+                <div>
+                    <dt>total</dt>
+                    <dd>$ 5,490</dd>
+                </div>
+                <div>
+                    <dt>shipping</dt>
+                    <dd>$ 50</dd>
+                </div>
+                <div>
+                    <dt>VAT(included)</dt>
+                    <dd>$ 1,076</dd>
+                </div>
+                <div>
+                    <dt>Grand total</dt>
+                    <dd>$ 5,540</dd>
+                </div>
+            </dl>
+            <button className="box btn-primary">continue & pay</button>
+        </div>
     );
 }
 
@@ -126,20 +186,21 @@ function CheckoutPage() {
     return (
         <NavProvider>
             <Header>
+                <div class="main-content"><a href="" className="capitalized">go back</a></div>
             </Header>
-            <main class="stack">
-                <h1>checkout</h1>
-                <Indicator steps={steps} current={currentStep} />
-                <div class="segragator no-gap no-padding">
-                    <button ref={components.prev} aria-label="previous step" class="box row" id="prev_step" type="button" data-icon-position="start" data-icon="arrow_left" disabled="true" autocomplete="off" onClick={previousStep}>previous step</button>
-                    <button ref={components.next} aria-label="next step" class="box row" id="next_step" type="button" data-icon-position="end" data-icon="arrow_right" onClick={requestNextFormStep}>next step</button>
-                </div>
-                <form action="" data-mobile-selected ref={components.form} onFocusIn={handleInputFocus} onChange={handleChange}>
+            <form class={style["c-form"] + " main-content"} action="" data-mobile-selected ref={components.form} onFocusIn={handleInputFocus} onChange={handleChange}>
+                <div class="box stack">
+                    <h1>checkout</h1>
+                    <Indicator steps={steps} current={currentStep} />
+                    <div class="segragator no-gap no-padding">
+                        <button ref={components.prev} aria-label="previous step" class="box row" id="prev_step" type="button" data-icon-position="start" data-icon="arrow_left" disabled="true" autocomplete="off" onClick={previousStep}>previous</button>
+                        <button ref={components.next} aria-label="next step" class="box row" id="next_step" type="button" data-icon-position="end" data-icon="arrow_right" onClick={requestNextFormStep}>next</button>
+                    </div>
                     <step-by-step on:indexupdated={stepUpdater}>
                         <For each={fieldsets}>
                             {
                                 (set) => (
-                                    <fieldset className="input-step stack">
+                                    <fieldset class="input-step stack">
                                         <legend>{set.title}</legend>
                                         <For each={set.inputs}>
                                             {
@@ -155,7 +216,7 @@ function CheckoutPage() {
                                 )
                             }
                         </For>
-                        <fieldset className="input-step stack">
+                        <fieldset class="input-step stack">
                             <legend>payment details</legend>
                             <div class="pm-grid">
                                 <h5 class="capitalize">payment method</h5>
@@ -168,11 +229,11 @@ function CheckoutPage() {
                                     <label class="box" for="cash">cash on delivery</label>
                                 </div>
                             </div>
-                            <div className="column" data-payment="mobile">
+                            <div class="column" data-payment="mobile">
                                 <div><input type="text" id="t-number" pattern="" name="transNumber" /><label htmlFor="">e-Money number</label></div>
                                 <div><input type="text" id="t-pin" pattern="\d{4,}" name="transPin" /><label htmlFor="">e-Money PIN</label></div>
                             </div>
-                            <div className="row" data-payment="cash">
+                            <div class="row" data-payment="cash">
                                 <svg width="48" height="48" class="no-shrink" data-icon-theme="primary">
                                     <title>illustration of a cash payment</title>
                                     <use href={icons + "#cash-on-payment"} />
@@ -181,8 +242,10 @@ function CheckoutPage() {
                             </div>
                         </fieldset>
                     </step-by-step>
-                </form>
-            </main>
+                </div>
+                <Summary />
+            </form>
+            <Footer />
         </NavProvider>
     );
 }

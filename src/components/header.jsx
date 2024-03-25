@@ -47,11 +47,16 @@ function Header(props) {
 
     createEffect(function(oldState) {
         let newState = oldState ?? {};
+        const canUpdateCount = (
+            state().cartItems.itemsCount() > 0 &&
+            state().cartItems.itemsCount() !== oldState?.count &&
+            !state().preventCartReveal
+        );
 
-        if (state().cartItems.allItems() > 0 && state().cartItems.allItems() !== oldState?.count) {
-            components.cart.dataset.items = shownCount(state().cartItems.allItems());
-            components.cart.dataset.cart = getCartState(oldState?.count, state().cartItems.allItems());
-            return Object.assign(newState, { count: state().cartItems.allItems() });
+        if (canUpdateCount) {
+            components.cart.dataset.items = shownCount(state().cartItems.itemsCount());
+            components.cart.dataset.cart = getCartState(oldState?.count, state().cartItems.itemsCount());
+            return Object.assign(newState, { count: state().cartItems.itemsCount() });
         }
         if (state().menuOpened !== oldState?.menuOpened) {
             document.documentElement.dataset.menuOpened = state().menuOpened;
@@ -62,6 +67,9 @@ function Header(props) {
             components.scope.enterScope();
         } else {
             delete document.documentElement.dataset.cartActive;
+        }
+        if (state().preventCartReveal) {
+            delete components.cart.dataset.items;
         }
         return oldState;
     });
@@ -86,11 +94,11 @@ function Header(props) {
                     <div class="cart-modal" role="dialog" aria-label="list of items in your cart">
                         <button type="button" class="self-end no-padding" data-icon-theme="neutral" data-icon-position="end" data-icon="cross" aria-label="close the modal" onClick={toggleCartModal}></button>
                         <form action="" class="column">
+                            <div class="not-empty"></div>
                             <div class="segragator not-empty-sibling">
-                                <h4>Cart ({state().cartItems.allItems()})</h4>
+                                <h4>Cart ({state().cartItems.itemsCount()})</h4>
                                 <button class="reset-btn">Remove all</button>
                             </div>
-                            <div class="not-empty"></div>
                             <dl class="segragator not-empty-sibling">
                                 <dt class="caption-text">total</dt>
                                 <dd><strong>$ 2000</strong></dd>
