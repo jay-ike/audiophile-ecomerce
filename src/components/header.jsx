@@ -53,6 +53,7 @@ function Header(props) {
             !state().preventCartReveal
         );
 
+        console.log(state().preventCartReveal);
         if (canUpdateCount) {
             components.cart.dataset.items = shownCount(state().cartItems.itemsCount());
             components.cart.dataset.cart = getCartState(oldState?.count, state().cartItems.itemsCount());

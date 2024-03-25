@@ -118,7 +118,7 @@
 
 .c-recap {
 
-    & dt {
+    :is(.c-dialog, &) dt {
         color: hsl(0, 0%, 43%);
     }
     & > div {
@@ -136,6 +136,26 @@
         color: var(--clr, inherit);
 
     }
+}
+
+.c-dialog {
+    --color-fill: var(--system-color-white);
+    --radius: .5rem;
+}
+
+:is(.recap-box, .total-box) {
+    --r-space: .5rem;
+}
+
+.recap-box {
+    --color-fill: hsl(0, 0%, 94%);
+    --radius: .5rem .5rem 0 0;
+}
+
+.total-box {
+    --color-fill: var(--system-color-dark);
+    --radius: 0 0 .5rem .5rem;
+    --color-text: var(--system-color-white);
 }
 
 @media screen and (min-width: 480px) {

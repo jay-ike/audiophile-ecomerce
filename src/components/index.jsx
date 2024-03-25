@@ -6,10 +6,13 @@ import {homeAssets} from "./assets.map.jsx";
 import BrandDescription from "./brand-description";
 import {getNavContext, NavProvider} from "./header.context.jsx";
 import ItemCounter from "./item-counter";
+import {CheckoutModal, CheckoutSummary}  from "./checkout.components.jsx";
 
 export {
     BrandDescription,
     Categories,
+    CheckoutModal,
+    CheckoutSummary,
     FeaturedArticle,
     Footer,
     ItemCounter,

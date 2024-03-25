@@ -1,5 +1,5 @@
-import { createSignal, For, onMount } from "solid-js";
-import { Footer, Header, NavProvider, getNavContext } from "./components";
+import { createSignal, For } from "solid-js";
+import { CheckoutModal, CheckoutSummary, Footer, Header, NavProvider } from "./components";
 import icons from "./assets/icons.svg";
 import style from "./checkout.module.css";
 
@@ -51,11 +51,6 @@ const fieldsets = [
     }
 ];
 const steps = ["your informations", "the shipping address", "how will you pay ?"];
-const plural = (count) => (
-    count > 1
-        ? "s"
-        : ""
-);
 
 function Indicator(props) {
     return (
@@ -69,63 +64,6 @@ function Indicator(props) {
     );
 }
 
-function Summary() {
-    const [navState, { hideCartModal }] = getNavContext();
-
-    onMount(function() {
-        hideCartModal();
-    });
-
-    return (
-        <div className="box column">
-            <h2>summary</h2>
-            <ul className="not-empty column">
-                <For each={navState().cartItems.allItems()}>
-                    {
-                        (item) => (
-                            <li className="item-grid">
-                                <h4>{item.name}</h4>
-                                <p>{item.price}</p>
-                                <span aria-label={item.count + " item" + plural(item.count)}>x{item.count}</span>
-                                <div className="img-box">
-                                    <img {...item.image} />
-                                </div>
-                            </li>
-                        )
-                    }
-                </For>
-            </ul>
-            <div class="center empty">
-                <svg width="128" height="128">
-                    <title>illustration of an empty box</title>
-                    <use href={icons + "#empty"} />
-                </svg>
-                <h5>There is no item in your cart</h5>
-                <p>To see your items here you should go to a product's page and click the <strong>"add to cart"</strong> button</p>
-            </div>
-
-            <dl class={style["c-recap"] + " not-empty-sibling stack"}>
-                <div>
-                    <dt>total</dt>
-                    <dd>$ 5,490</dd>
-                </div>
-                <div>
-                    <dt>shipping</dt>
-                    <dd>$ 50</dd>
-                </div>
-                <div>
-                    <dt>VAT(included)</dt>
-                    <dd>$ 1,076</dd>
-                </div>
-                <div>
-                    <dt>Grand total</dt>
-                    <dd>$ 5,540</dd>
-                </div>
-            </dl>
-            <button className="box btn-primary">continue & pay</button>
-        </div>
-    );
-}
 
 function CheckoutPage() {
     const components = Object.create(null);
@@ -181,6 +119,10 @@ function CheckoutPage() {
             delete form.dataset.mobileSelected;
             form.dataset.cashSelected = "";
         }
+    }
+
+    function paymentRequested() {
+        components.dialog.showModal();
     }
 
     return (
@@ -243,9 +185,10 @@ function CheckoutPage() {
                         </fieldset>
                     </step-by-step>
                 </div>
-                <Summary />
+                <CheckoutSummary onPayment={paymentRequested}/>
             </form>
             <Footer />
+            <CheckoutModal ref={components.dialog}/>
         </NavProvider>
     );
 }
