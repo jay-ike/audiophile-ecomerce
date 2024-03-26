@@ -7,6 +7,11 @@ const fakeItems = [["iw209342", {
     name: "YX1",
     price: "$ 539",
     count: 3
+}], ["id0w9ew3", {
+    image: categoryAssets.headphones,
+    name: "Bang & olufsen Xd",
+    price: "$ 1,023",
+    count: 1
 }]];
 
 function storeUpdater(prop, computed) {

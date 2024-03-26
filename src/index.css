@@ -133,6 +133,14 @@ body {
         text-decoration: currentColor wavy underline;
     }
 
+    button:not(.reset-btn) {
+        font-weight: bold;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        touch-action: manipulation;
+        user-select: none;
+    }
+
     :focus-visible {
         --outline-size: max(2px, .3em);
         outline: var(--outline-width, var(--outline-size)) var(--outline-style, solid) var(--outline-clr, currentColor);
@@ -208,16 +216,8 @@ body {
         --g-gap: .4rem 1rem;
 
         &> :is(p, span) {
-            color: hsl(0, 0%, 43%);
+            color: var(--items-clr, hsl(0, 0%, 43%));
         }
-    }
-
-    button:not(.reset-btn) {
-        font-weight: bold;
-        letter-spacing: 1px;
-        text-transform: uppercase;
-        touch-action: manipulation;
-        user-select: none;
     }
 
     :where(.reset-btn) {
@@ -238,6 +238,7 @@ body {
         background-color: var(--icon-fill, currentColor);
         transform: var(--icon-transform, none);
         clip-path: var(--icon-clip, none);
+        align-self: var(--icon-align, self-start);
     }
 
     [data-icon-position="start"]:where(:enabled, a):where(:hover, :focus-visible)::before,
@@ -269,6 +270,10 @@ body {
 
     [data-icon="minus"] {
         --icon-clip: url(#minus);
+    }
+
+    [data-icon="check-circle"] {
+        --icon-clip: url(#check-circle);
     }
 
     :is(.input-step, [data-payment="mobile"]) {
@@ -597,6 +602,10 @@ body {
 
     [data-icon-theme="primary"] {
         --icon-fill: var(--system-color-orange);
+    }
+
+    [data-outline-color ="dark"] {
+        --outline-clr: var(--system-color-dark);
     }
 
     .btn-primary {
