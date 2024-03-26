@@ -3,15 +3,17 @@ import {categoryAssets} from "./assets.map.jsx";
 
 const NavContext = createContext({ items: 0, opened: false });
 const fakeItems = [["iw209342", {
+    cost: 539,
+    count: 3,
     image: categoryAssets.earphones,
     name: "YX1",
-    price: "$ 539",
-    count: 3
+    priceTag: "$ 539",
 }], ["id0w9ew3", {
+    cost: 1023,
+    count: 1,
     image: categoryAssets.headphones,
     name: "Bang & olufsen Xd",
-    price: "$ 1,023",
-    count: 1
+    priceTag: "$ 1,023",
 }]];
 
 function storeUpdater(prop, computed) {
@@ -34,14 +36,14 @@ function updateContent(content, key, fn) {
 }
 function Cart(entries = []) {
     const content = entries.reduce(function itemReducer(acc, [key, val]) {
-        acc[key] = val;
+        acc[key] = Object.assign(val, {id: key});
         return acc;
     }, Object.create(null));
     function addItem(id, data) {
         if (!data) {
             return new Cart(Object.entries(content));
         }
-        return updateContent(content, id, function(meta) {
+        return updateContent(Object.assign({}, content), id, function(meta) {
             let clone;
             let count;
             count = meta?.count;
@@ -54,7 +56,7 @@ function Cart(entries = []) {
         if (!content[id]) {
             return new Cart(Object.entries(content));
         }
-        return updateContent(content, id, function(meta) {
+        return updateContent(Object.assign({}, content), id, function(meta) {
             let clone;
             if (meta.count <= 1) {
                 return;
@@ -67,6 +69,12 @@ function Cart(entries = []) {
 
     function allItems() {
         return Object.values(content);
+    }
+    function totalCost() {
+        return allItems().reduce(
+            (acc, val) => acc + ((val?.cost ?? 0) * (val?.count ?? 0)),
+            0
+        );
     }
     function itemsCount() {
         return allItems().reduce(
@@ -89,6 +97,10 @@ function Cart(entries = []) {
         },
         removeItem: {
             value: removeItem,
+            writable: false
+        },
+        totalCost: {
+            value: totalCost,
             writable: false
         }
     });

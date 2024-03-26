@@ -18,4 +18,4 @@ if (import.meta.env.DEV && !(root instanceof HTMLElement)) {
 FocusScope.define();
 Stepper.define();
 
-render(() => <CheckoutPage />, root);
+render(() => <App />, root);

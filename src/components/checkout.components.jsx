@@ -2,14 +2,9 @@ import { For, Show, onMount } from "solid-js";
 import { getNavContext } from "./header.context.jsx";
 import icons from "../assets/icons.svg";
 import style from "../checkout.module.css";
+import utils from "../utils.js";
 
-const plural = (count) => (
-    count > 1
-        ? "s"
-        : ""
-);
-
-const remainingItems = (count) => "and " + count + "other item" + plural(count);
+const remainingItems = (count) => "and " + count + "other item" + utils.plural(count);
 
 
 function CheckoutSummary(props) {
@@ -29,7 +24,7 @@ function CheckoutSummary(props) {
                             <li class="item-grid">
                                 <h4>{item.name}</h4>
                                 <p>{item.price}</p>
-                                <span aria-label={item.count + " item" + plural(item.count)}>x{item.count}</span>
+                                <span aria-label={item.count + " item" + utils.plural(item.count)}>x{item.count}</span>
                                 <div class="img-box">
                                     <img {...item.image} />
                                 </div>
@@ -101,7 +96,7 @@ function CheckoutModal(props) {
                                     <li class="item-grid">
                                         <h4>{item.name}</h4>
                                         <p>{item.price}</p>
-                                        <span aria-label={item.count + " item" + plural(item.count)}>x{item.count}</span>
+                                        <span aria-label={item.count + " item" + utils.plural(item.count)}>x{item.count}</span>
                                         <div class="img-box">
                                             <img {...item.image} />
                                         </div>

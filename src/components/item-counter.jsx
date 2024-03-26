@@ -14,14 +14,14 @@ function ItemCounter(props) {
         let event;
 
         if (counter() > count) {
-            event = new CustomEvent("counterincremented", {details: props.itemDatas});
+            event = new CustomEvent("counterincremented", {bubbles: true, details: props.itemDatas});
             input.dispatchEvent(event);
         }
         if (counter() < count) {
-            event = new CustomEvent("counterdecremented", {details: props.itemDatas});
+            event = new CustomEvent("counterdecremented", {bubbles: true, details: props.itemDatas});
             input.dispatchEvent(event);
         }
-        return count;
+        return counter();
     });
 
     return (
