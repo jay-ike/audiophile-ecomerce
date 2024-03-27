@@ -1,7 +1,7 @@
 import { createSignal, For } from "solid-js";
-import { CheckoutModal, CheckoutSummary, Footer, Header, NavProvider } from "./components";
-import icons from "./assets/icons.svg";
-import style from "./checkout.module.css";
+import { CheckoutModal, CheckoutSummary, Footer, Header, NavProvider } from "../components";
+import icons from "../assets/icons.svg";
+import style from "../assets/styles/checkout.module.css";
 
 const fieldsets = [
     {
@@ -128,7 +128,7 @@ function CheckoutPage() {
     return (
         <NavProvider>
             <Header>
-                <div class="main-content"><a href="" className="capitalized">go back</a></div>
+                <div class="main-content"><a href="/" className="capitalized">go back</a></div>
             </Header>
             <form class={style["c-form"] + " main-content"} action="" data-mobile-selected ref={components.form} onFocusIn={handleInputFocus} onChange={handleChange}>
                 <div class="box stack">

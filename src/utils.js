@@ -5,6 +5,16 @@ const plural = (count) => (
     ? "s"
     : ""
 );
+function copy(object) {
+    return Object.freeze({
+        with(newDatas) {
+            return Object.assign(
+                Object.assign({}, object ?? {}),
+                newDatas ?? {}
+            );
+        }
+    });
+}
 
 function getFormatter() {
     let dateFormatter = new Intl.DateTimeFormat(
@@ -43,8 +53,18 @@ function getFormatter() {
         }
     });
 }
+function getTax(amount) {
+    return Number.parseFloat((0.1925 * amount).toFixed(2));
+}
+
+function shippingCost(cartAmount) {
+    return Math.round(0.05 * cartAmount);
+}
 
 export default Object.freeze({
+    copy,
     getFormatter,
-    plural
+    getTax,
+    plural,
+    shippingCost
 });

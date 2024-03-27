@@ -1,10 +1,11 @@
 import { For, Show, onMount } from "solid-js";
 import { getNavContext } from "./header.context.jsx";
 import icons from "../assets/icons.svg";
-import style from "../checkout.module.css";
+import style from "../assets/styles/checkout.module.css";
 import utils from "../utils.js";
 
 const remainingItems = (count) => "and " + count + "other item" + utils.plural(count);
+const formatter = utils.getFormatter();
 
 
 function CheckoutSummary(props) {
@@ -23,10 +24,10 @@ function CheckoutSummary(props) {
                         (item) => (
                             <li class="item-grid">
                                 <h4>{item.name}</h4>
-                                <p>{item.price}</p>
+                                <p>{formatter.formatCurrency(item.cost)}</p>
                                 <span aria-label={item.count + " item" + utils.plural(item.count)}>x{item.count}</span>
                                 <div class="img-box">
-                                    <img {...item.image} />
+                                    <img {...utils.copy(item.image).with({width: 48, height: 48})} />
                                 </div>
                             </li>
                         )
@@ -45,19 +46,19 @@ function CheckoutSummary(props) {
             <dl class={style["c-recap"] + " not-empty-sibling stack"}>
                 <div>
                     <dt>total</dt>
-                    <dd>$ 5,490</dd>
+                    <dd>{formatter.formatCurrency(navState().cartItems.totalCost())}</dd>
                 </div>
                 <div>
                     <dt>shipping</dt>
-                    <dd>$ 50</dd>
+                    <dd>{formatter.formatCurrency(utils.shippingCost(navState().cartItems.totalCost()))}</dd>
                 </div>
                 <div>
-                    <dt>VAT(included)</dt>
-                    <dd>$ 1,076</dd>
+                    <dt aria-label="VAT included">VAT(included)</dt>
+                    <dd>{formatter.formatCurrency(utils.getTax(navState().cartItems.totalCost()))}</dd>
                 </div>
                 <div>
                     <dt>Grand total</dt>
-                    <dd>$ 5,540</dd>
+                    <dd>{formatter.formatCurrency(utils.shippingCost(navState().cartItems.totalCost()) + navState().cartItems.totalCost())}</dd>
                 </div>
             </dl>
             <button type="button" class="btn-primary" onClick={props.onPayment}>continue & pay</button>
@@ -95,7 +96,7 @@ function CheckoutModal(props) {
                                 (item) => (
                                     <li class="item-grid">
                                         <h4>{item.name}</h4>
-                                        <p>{item.price}</p>
+                                        <p>{formatter.formatCurrency(item.cost)}</p>
                                         <span aria-label={item.count + " item" + utils.plural(item.count)}>x{item.count}</span>
                                         <div class="img-box">
                                             <img {...item.image} />
@@ -111,7 +112,7 @@ function CheckoutModal(props) {
                     <dd><strong>$ 2,390</strong></dd>
                 </dl>
             </div>
-            <a class="btn-primary" href="" data-outline-color="dark">back to home</a>
+            <a class="btn-primary" href="/" data-outline-color="dark">back to home</a>
         </dialog>
     );
 }

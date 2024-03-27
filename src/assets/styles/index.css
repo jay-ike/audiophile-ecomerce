@@ -5,7 +5,7 @@ theme;
 
 @font-face {
     font-family: "Just";
-    src: url("./assets/JUST Sans Variable.ttf") format("truetype");
+    src: url("../JUST Sans Variable.ttf") format("truetype");
     font-weight: 300 900;
     font-feature-settings: "dlig" on, "ordn" on, "ss02" on;
     font-display: swap;
@@ -432,6 +432,9 @@ body {
         --c-space: 1rem;
     }
 
+    .m-backdrop:not([data-cart-active] *) {
+        display: none;
+    }
     .m-backdrop:where([data-cart-active="true"] *) {
         position: fixed;
         inset: 0;
@@ -473,7 +476,7 @@ body {
         margin-inline-start: var(--cart-margin, auto);
         position: relative;
 
-        &:is([data-items])::before {
+        &:is([data-items]:enabled)::before {
             content: attr(data-items);
             display: inline-grid;
             place-items: center;

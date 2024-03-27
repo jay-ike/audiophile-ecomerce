@@ -36,7 +36,7 @@ function CartModal() {
     const formatter = utils.getFormatter();
     let cancel;
 
-    createEffect(function () {
+    createEffect(function() {
         if (state().cartActive) {
             cancel.focus();
         }
@@ -79,7 +79,7 @@ function CartModal() {
                                         <p>{formatter.formatCurrency(item.cost)}</p>
                                         <ItemCounter initialValue={item.count} name={item.name} id={item.id} />
                                         <div className="img-box">
-                                            <img {...item.image} />
+                                            <img {...utils.copy(item.image).with({ width: 48, height: 48 })} />
                                         </div>
                                     </li>
                                 )
@@ -98,7 +98,7 @@ function CartModal() {
                         <h5>There is no item in your cart</h5>
                         <p>To see your items here you should go to a product's page and click the <strong>"add to cart"</strong> button</p>
                     </div>
-                    <button type="button" class="btn-primary not-empty-sibling">checkout</button>
+                    <a href="/checkout" class="btn-primary not-empty-sibling" onClick={closeCart}>checkout</a>
                 </form>
             </div>
             <div tabindex="0"></div>
@@ -192,12 +192,11 @@ function Header(props) {
                     </For>
                 </ul>
                 <button
-                    class="box"
                     aria-label={(state().cartActive ? "close" : "reveal") + " your cart"}
                     aria-pressed={state().cartActive}
                     ref={components.cart}
-                    href=""
                     data-cart="idle"
+                    disabled={state().preventCartReveal}
                     onAnimationEnd={handleAnimation}
                     onClick={toggleCartModal}>
                     <svg width="24" height="24">

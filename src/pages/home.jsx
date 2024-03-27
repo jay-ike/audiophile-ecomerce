@@ -1,4 +1,4 @@
-import styles from './App.module.css';
+import styles from "../assets/styles/App.module.css";
 import {
     BrandDescription,
     Categories,
@@ -7,7 +7,7 @@ import {
     Header,
     NavProvider,
     homeAssets
-} from "./components";
+} from "../components";
 
 const sectionContents = {
     mainProduct: {
