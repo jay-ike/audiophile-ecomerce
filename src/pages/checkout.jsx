@@ -128,7 +128,7 @@ function CheckoutPage() {
     return (
         <NavProvider>
             <Header>
-                <div class="main-content"><a href="/" className="capitalized">go back</a></div>
+                <div class="main-content"><a href="/" class="capitalize link">go back</a></div>
             </Header>
             <form class={style["c-form"] + " main-content"} action="" data-mobile-selected ref={components.form} onFocusIn={handleInputFocus} onChange={handleChange}>
                 <div class="box stack">

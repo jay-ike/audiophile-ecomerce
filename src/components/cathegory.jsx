@@ -1,5 +1,4 @@
 import {For} from "solid-js";
-import assets from "../assets/icons.svg?url";
 import {categoryAssets} from "./assets.map.jsx";
 function mapper(metadata) {
     return Object.entries(metadata).map(function ([key, val]) {
@@ -10,19 +9,19 @@ function mapper(metadata) {
 }
 function Category(props) {
     return (
-        <article class="box">
+        <li class="box">
             <img src={props.src} alt={props.alt} width={props.width} height={props.height} />
             <h3>{props.name}</h3>
             <a href={props.link} data-icon-position="end" data-icon="arrow_right">
                 shop
             </a>
-        </article>
+        </li>
     );
 }
 
-function Categories() {
+function Categories(props) {
     return (
-        <menu class="categories column">
+        <ul class={props.class + " categories column"} role="list">
             <For each={mapper(categoryAssets)}>
                 {
                     (item) => (
@@ -30,7 +29,7 @@ function Categories() {
                     )
                 }
             </For>
-        </menu>
+        </ul>
     );
 }
 

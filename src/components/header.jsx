@@ -1,6 +1,7 @@
 import { createEffect, For, onMount, Show } from "solid-js";
 import { Logo } from "./footer";
 import { getNavContext } from "./header.context.jsx";
+import Cathegories from "./cathegory.jsx";
 import ItemCounter from "./item-counter.jsx";
 import assets from "../assets/icons.svg?url";
 import utils from "../utils";
@@ -130,7 +131,7 @@ function Header(props) {
             state().cartItems.itemsCount() !== oldState?.count &&
             !state().preventCartReveal
         );
-        if (totalItems <= 0) {
+        if (totalItems <= 0 || state().preventCartReveal) {
             delete components.cart.dataset.items;
         }
 
@@ -145,13 +146,10 @@ function Header(props) {
         }
         if (state().cartActive) {
             document.documentElement.dataset.cartActive = state().cartActive;
-            components.scope.enterScope();
+            components.cartScope.enterScope();
         } else {
             delete document.documentElement.dataset.cartActive;
             document.body.focus();
-        }
-        if (state().preventCartReveal) {
-            delete components.cart.dataset.items;
         }
         return oldState;
     });
@@ -160,7 +158,7 @@ function Header(props) {
         observer.observe(document.documentElement);
     });
     function toggleCartModal() {
-        if (!state().menuOpened && !state().preventCartReveal) {
+        if (!state().menuOpened) {
             toggleCart();
         }
     }
@@ -206,10 +204,13 @@ function Header(props) {
                 </button>
             </nav>
             <Show when={state().preventCartReveal === false}>
-                <focus-scope ref={components.scope}>
+                <focus-scope ref={components.cartScope}>
                     <CartModal />
                 </focus-scope>
             </Show>
+            <div className="menu">
+                <Cathegories />
+            </div>
 
             {props.children}
         </>

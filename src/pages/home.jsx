@@ -48,7 +48,7 @@ function App() {
                         <a href="" class="box">see product</a>
                     </div>
                 </header>
-                <Categories />
+                <Categories class="xl-show"/>
                 <FeaturedArticle {...sectionContents.mainProduct} />
                 <FeaturedArticle {...sectionContents.secondProduct} />
                 <FeaturedArticle {...sectionContents.thirdProduct} />

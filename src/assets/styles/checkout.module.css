@@ -1,7 +1,3 @@
-[id="root"] {
-    background-color: var(--system-color-pale);
-}
-
 .step-indicator {
     --deco-size: 1.7em;
     --bdr-width: 2px;
