@@ -440,11 +440,17 @@ body {
         --modal-size: min(88vi, 377px);
         --translation: translateY(-50vb);
         --c-space: 1rem;
+
+        & ul {
+            max-block-size: 35vb;
+            overflow-y: auto;
+        }
     }
 
     .m-backdrop:not([data-cart-active] *),
     .menu:not([data-menu-opened="true"] *) {
         clip-path: inset(50%);
+        visibility: hidden;
     }
 
     .m-backdrop:where([data-cart-active="true"] *),
