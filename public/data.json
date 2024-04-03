@@ -11,7 +11,7 @@
             "new-product": true,
             "name": "XX99 Mark II Headphones",
             "description": "The new XX99 Mark II headphones is the pinnacle of pristine audio. It redefines your premium headphone experience by reproducing the balanced depth and precision of studio-quality sound.",
-            "cathegory": "headphone",
+            "category": "headphone",
             "price": 2999,
             "features": [
                 "Featuring a genuine leather head strap and premium earcups, these headphones deliver superior comfort for those who like to enjoy endless listening. It includes intuitive controls designed for any situation. Whether you’re taking a business call or just in your own personal space, the auto on/off and pause features ensure that you’ll never miss a beat.",
@@ -70,7 +70,7 @@
                 "url": "/images/headphone-xx99-mark1.png",
                 "width": 220
             },
-            "cathegory": "headphone",
+            "category": "headphone",
             "price": 1750,
             "features": [
                 "As the headphones all others are measured against, the XX99 Mark I demonstrates over five decades of audio expertise, redefining the critical listening experience. This pair of closed-back headphones are made of industrial, aerospace-grade materials to emphasize durability at a relatively light weight of 11 oz.",
@@ -125,7 +125,7 @@
                 "width": 220
             },
             "description": "Enjoy your audio almost anywhere and customize it to your specific tastes with the XX59 headphones. The stylish yet durable versatile wireless headset is a brilliant companion at home or on the move.",
-            "cathegory": "headphone",
+            "category": "headphone",
             "previews": [
                 {
                     "alt": "a young woman enjoying music with her white headphone",
@@ -180,7 +180,7 @@
                 "url": "/images/speaker-zx9.png",
                 "width": 220
             },
-            "cathegory": "speaker",
+            "category": "speaker",
             "description": "Upgrade your sound system with the all new ZX9 active speaker. It’s a bookshelf speaker system that offers truly wireless connectivity -- creating new possibilities for more pleasing and practical audio setups.",
             "previews": [
                 {
@@ -233,7 +233,7 @@
         {
             "id": "6f7c56a5-3b57-4036-8205-f22e9d90d60e",
             "name": "ZX7 SPEAKER",
-            "cathegory": "speaker",
+            "category": "speaker",
             "image": {
                 "alt": "a black speaker with a white sound output at the top",
                 "height": 243,
@@ -292,7 +292,7 @@
         {
             "id": "6ce8a43d-0e8d-466d-9364-794cc0d382b7",
             "name": "YX1 wireless earphones",
-            "cathegory": "earphone",
+            "category": "earphone",
             "image": {
                 "alt": "a black and circular earbuds charging box",
                 "height": 243,

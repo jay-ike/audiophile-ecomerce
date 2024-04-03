@@ -62,7 +62,7 @@ function CartModal() {
     }
 
     return (
-        <div className="m-backdrop" onKeyUp={handleKeyPress}>
+        <div class="m-backdrop" onKeyUp={handleKeyPress}>
             <div tabindex="0"></div>
             <div class="cart-modal" role="dialog" aria-label="list of items in your cart" aria-modal="true">
                 <button ref={cancel} type="button" class="self-end no-padding" data-icon-theme="neutral" data-icon-position="end" data-icon="cross" aria-label="close the modal" onClick={toggleCartModal}></button>
@@ -75,11 +75,11 @@ function CartModal() {
                         <For each={state().cartItems.allItems()}>
                             {
                                 (item) => (
-                                    <li className="cart-item-grid">
+                                    <li class="cart-item-grid">
                                         <h4>{item.name}</h4>
                                         <p>{formatter.formatCurrency(item.cost)}</p>
                                         <ItemCounter initialValue={item.count} name={item.name} id={item.id} />
-                                        <div className="img-box">
+                                        <div class="img-box">
                                             <img {...utils.copy(item.image).with({ width: 48, height: 48 })} />
                                         </div>
                                     </li>
@@ -208,7 +208,7 @@ function Header(props) {
                     <CartModal />
                 </focus-scope>
             </Show>
-            <div className="menu">
+            <div class="menu">
                 <Cathegories />
             </div>
 

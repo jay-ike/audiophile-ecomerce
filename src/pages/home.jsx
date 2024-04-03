@@ -5,7 +5,6 @@ import {
     FeaturedArticle,
     Footer,
     Header,
-    NavProvider,
     homeAssets
 } from "../components";
 
@@ -34,7 +33,7 @@ const sectionContents = {
 function App() {
     const { hero } = homeAssets;
     return (
-        <NavProvider>
+        <>
             <Header>
             </Header>
             <main class="stack">
@@ -55,7 +54,7 @@ function App() {
                 <BrandDescription />
             </main>
             <Footer />
-        </NavProvider>
+        </>
     );
 }
 

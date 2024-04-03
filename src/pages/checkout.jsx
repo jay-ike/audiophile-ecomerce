@@ -1,5 +1,5 @@
 import { createSignal, For } from "solid-js";
-import { CheckoutModal, CheckoutSummary, Footer, Header, NavProvider } from "../components";
+import { CheckoutModal, CheckoutSummary, Footer, Header} from "../components";
 import icons from "../assets/icons.svg";
 import style from "../assets/styles/checkout.module.css";
 
@@ -126,7 +126,7 @@ function CheckoutPage() {
     }
 
     return (
-        <NavProvider>
+        <>
             <Header>
                 <div class="main-content"><a href="/" class="capitalize link">go back</a></div>
             </Header>
@@ -189,7 +189,7 @@ function CheckoutPage() {
             </form>
             <Footer />
             <CheckoutModal ref={components.dialog}/>
-        </NavProvider>
+        </>
     );
 }
 

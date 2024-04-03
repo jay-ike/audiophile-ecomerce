@@ -1,5 +1,6 @@
 import { createContext, createSignal, useContext } from "solid-js";
 import {categoryAssets} from "./assets.map.jsx";
+import utils from "../utils.js"
 
 const NavContext = createContext({ items: 0, opened: false });
 const fakeItems = [["iw209342", {
@@ -7,24 +8,13 @@ const fakeItems = [["iw209342", {
     count: 3,
     image: categoryAssets.earphones,
     name: "YX1",
-    priceTag: "$ 539",
 }], ["id0w9ew3", {
     cost: 1023,
     count: 1,
     image: categoryAssets.headphones,
     name: "Bang & olufsen Xd",
-    priceTag: "$ 1,023",
 }]];
 
-function storeUpdater(prop, computed) {
-    return function(val) {
-        const clone = Object.assign({}, val);
-        if (clone[prop] !== undefined) {
-            clone[prop] = computed(clone[prop]);
-        }
-        return clone;
-    };
-}
 
 function updateContent(content, key, fn) {
     if (content[key] && typeof fn === "function") {
@@ -45,10 +35,8 @@ function Cart(entries = []) {
         }
         return updateContent(Object.assign({}, content), id, function(meta) {
             let clone;
-            let count;
-            count = meta?.count;
             clone = Object.assign(meta ?? {}, data);
-            clone.count = (count ?? 0) + 1;
+            clone.count = (meta?.count ?? 0) + 1;
             return clone;
         });
     }
@@ -120,38 +108,38 @@ function NavProvider(props) {
         state,
         {
             addToCart(data) {
-                setState(storeUpdater(
+                setState(utils.storeUpdater(
                     "cartItems", (items) => items.addItem(data.id, data)
                 ));
             },
             closeCart() {
-                setState(storeUpdater("cartActive", () => false));
+                setState(utils.storeUpdater("cartActive", () => false));
             },
             closeMenu() {
-                setState(storeUpdater("menuOpened", () => false));
+                setState(utils.storeUpdater("menuOpened", () => false));
             },
             hideCartModal() {
-                setState(storeUpdater("preventCartReveal", () => true));
+                setState(utils.storeUpdater("preventCartReveal", () => true));
             },
             openCart() {
-                setState(storeUpdater("cartActive", () => true));
+                setState(utils.storeUpdater("cartActive", () => true));
             },
             openMenu() {
-                setState(storeUpdater("menuOpened", () => true));
+                setState(utils.storeUpdater("menuOpened", () => true));
             },
             removeToCart(id) {
-                setState(storeUpdater(
+                setState(utils.storeUpdater(
                     "cartItems", (items) => items.removeItem(id)
                 ));
             },
             showCartModal() {
-                setState(storeUpdater("preventCartReveal", () => false));
+                setState(utils.storeUpdater("preventCartReveal", () => false));
             },
             toggleMenu() {
-                setState(storeUpdater("menuOpened", (state) => !state));
+                setState(utils.storeUpdater("menuOpened", (state) => !state));
             },
             toggleCart() {
-                setState(storeUpdater("cartActive", (state) => !state));
+                setState(utils.storeUpdater("cartActive", (state) => !state));
             },
         }
     ];

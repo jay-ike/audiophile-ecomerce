@@ -129,9 +129,9 @@ async function createDb(dbName = "jay-ike_shop", version = 1) {
             db.createObjectStore(order_store, {keyPath: "timestamp"});
         }
     });
-    result.addMany = async function insertMany(product_store) {
+    result.bulkUpsert = async function insertMany(products) {
         let tx = db.transaction(product_store, "readwrite");
-        let actions = product_store.map((elt) => tx.store.add(elt));
+        let actions = products.map((elt) => tx.store.put(elt));
         actions[actions.length] = tx.done;
         await Promise.all(actions);
     };
@@ -155,7 +155,7 @@ async function createDb(dbName = "jay-ike_shop", version = 1) {
     result.getCart = function () {
         cartStore.get(cartKey);
     };
-    return result;
+    return Object.freeze(result);
 }
 
 async function fetchData(url, options, timeout) {
@@ -184,12 +184,35 @@ async function fetchData(url, options, timeout) {
 
 }
 
+function storeUpdater(prop, computed) {
+    return function(val) {
+        const clone = Object.assign({}, val);
+        if (clone[prop] !== undefined) {
+            clone[prop] = computed(clone[prop]);
+        }
+        return clone;
+    };
+}
+
+async function fetchProducts() {
+    const db = await createDb();
+    let products = await db.getAllProducts();
+    if (products.length === 0) {
+        products = await fetchData("/data.json");
+        products = products.data;
+        await db.bulkUpsert(products);
+    }
+    return { db, products };
+}
+
 export default Object.freeze({
     copy,
     createDb,
     fetchData,
+    fetchProducts,
     getFormatter,
     getTax,
     plural,
-    shippingCost
+    shippingCost,
+    storeUpdater
 });
