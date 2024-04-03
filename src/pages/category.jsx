@@ -1,4 +1,5 @@
 import { Show, For, createResource } from "solid-js";
+import { useParams } from "@solidjs/router";
 import {
     Categories,
     BrandDescription,
@@ -7,14 +8,20 @@ import {
     ProductDescription
 } from "../components";
 import style from "../assets/styles/product.module.css";
+import utils from "../utils";
 
-function CategoriesPage(props) {
-    const [pageData] = createResource(getPageData);
+async function loadProducts(category) {
+    const { db, products } = await utils.fetchProducts();
+    return Object.freeze({
+        db,
+        products: products.filter((product) => product.category === category)
+    });
+}
 
+function CategoriesPage() {
+    const params = useParams();
+    const [pageData] = createResource(() => params.category, loadProducts);
 
-    function getPageData() {
-        return props.data;
-    }
     function productComparator(val1, val2) {
         if (val1["new-product"]) {
             return -1;
@@ -29,11 +36,11 @@ function CategoriesPage(props) {
         <>
             <Header></Header>
             <main class="stack">
+                <header className="box banner contain" role="banner">
+                    <h1>{params.category + "s"}</h1>
+                </header>
                 <Show when={Array.isArray(pageData()?.products)} fallback={<p>loading...</p>}>
-                    <For each={pageData().products.filter(
-                        (product) => product.category === pageData().category
-                    ).sort(productComparator)
-                    }>
+                    <For each={pageData().products.sort(productComparator)}>
                         {
                             (product) => (
                                 <ProductDescription class={style["product-desc"]} data={product}>

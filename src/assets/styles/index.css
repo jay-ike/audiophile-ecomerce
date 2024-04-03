@@ -323,7 +323,7 @@ body {
     }
 
     img:where(.categories *) {
-        border-image: radial-gradient(hsla(0, 0%, 0%, 0.4) 15%, #0000 70%) var(--s, 0% 50% 100%) / 50% /0 15px 20px;
+        border-image: radial-gradient(ellipse 60% 30%, hsla(0, 0%, 0%, 0.2) 15%, #0000 70%) var(--s, 0% 50% 100%) / 50% /0 15px 35px;
     }
 
     a:where(:is(.categories, nav) *) {
@@ -384,7 +384,7 @@ body {
         --c-space: 2.5rem;
         --min-padding: 1em;
         --f-size-diff: .4;
-        --link-clr: hsl(0, 0%, 43%);
+        --link-clr: hsl(0, 0%, 36%);
         padding: 2.5em 1.5em 1.5em;
         background-color: var(--system-color-white);
         border-radius: 0 0 .5rem .5rem;
@@ -512,7 +512,7 @@ body {
         }
     }
 
-    :where(.categories > li, .branding) {
+    :where(.categories > li, .branding, .contain) {
         container: section / inline-size;
     }
 
@@ -726,7 +726,7 @@ body {
         }
     }
 
-    :is(.center, .img-box) {
+    :is(.center, .img-box, .banner) {
         display: grid;
         place-items: center;
         place-content: center;
@@ -789,14 +789,18 @@ body {
         inset-inline-start: var(--deco-pos, calc(50% - 50.5px));
     }
 
-    footer>p:last-of-type {
-        text-transform: capitalize;
-    }
-
-    nav {
+    :where(nav, .banner) {
         --min-padding: 1.5em 0;
         --color-text: var(--system-color-pale);
         border-image: var(--section-bdr-img);
+    }
+
+    .banner {
+        min-block-size: 7rem;
+    }
+
+    nav {
+
         position: sticky;
         inset-block-start: 0;
         z-index: 1;
@@ -842,6 +846,9 @@ body {
         nav {
             --i-alignment: space-between;
             --cart-margin: 0;
+        }
+        .banner {
+            min-block-size: 10rem;
         }
 
     }

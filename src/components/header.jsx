@@ -213,7 +213,7 @@ function Header(props) {
                     <CartModal />
                 </focus-scope>
             </Show>
-            <div class="menu">
+            <div class="menu" on:menuselected={closeMenu}>
                 <Cathegories />
             </div>
 

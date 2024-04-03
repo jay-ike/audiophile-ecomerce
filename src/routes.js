@@ -1,13 +1,7 @@
 import { lazy } from "solid-js";
-import utils from "./utils.js";
 
 function updateTitle(title) {
     document.title = title ?? document.title;
-}
-async function loadProducts({params}) {
-    const {category = ""} = params;
-    const {db, products} = await utils.fetchProducts();
-    return Object.freeze({category, db, products});
 }
 const routes = [
     {
@@ -26,7 +20,6 @@ const routes = [
     },
     {
         component: lazy(() => import("./pages/category.jsx")),
-        load: loadProducts,
         path: "/categories/:category"
     }
 ];
