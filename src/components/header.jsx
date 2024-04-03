@@ -108,7 +108,12 @@ function CartModal() {
 }
 
 function Header(props) {
-    const links = ["home", "headphones", "speakers", "earphones"];
+    const links = [
+        {title:"home", path: "/"},
+        {title: "headphones", path: "/categories/headphone"},
+        {title: "speakers", path: "/categories/speaker"},
+        {title: "earphones", path: "/categories/earphone"}
+    ];
     const [state, { closeMenu, toggleMenu, toggleCart }] = getNavContext();
     const components = {};
     const observer = new ResizeObserver(function(entries) {
@@ -184,7 +189,7 @@ function Header(props) {
                     <For each={links}>
                         {
                             (link) => (
-                                <li><a href="" {...getPageState(props.currentPage ?? "home", link)}>{link}</a></li>
+                                <li><a href={link.path} {...getPageState(props.currentPage ?? "home", link.title)}>{link.title}</a></li>
                             )
                         }
                     </For>

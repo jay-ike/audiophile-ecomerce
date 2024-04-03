@@ -7,11 +7,7 @@ import BrandDescription from "./brand-description";
 import { getNavContext, NavProvider } from "./header.context.jsx";
 import ItemCounter from "./item-counter";
 import { CheckoutModal, CheckoutSummary } from "./checkout.components.jsx";
-import {
-    fetchProducts,
-    getProductContext,
-    ProductsProvider
-} from "./products.context.jsx";
+import ProductDescription from "./category-item";
 
 export {
     BrandDescription,
@@ -24,9 +20,7 @@ export {
     Logo,
     Header,
     NavProvider,
-    ProductsProvider,
-    fetchProducts,
+    ProductDescription,
     getNavContext,
-    getProductContext,
     homeAssets
 };

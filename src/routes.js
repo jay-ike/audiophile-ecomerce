@@ -1,12 +1,12 @@
 import { lazy } from "solid-js";
-import {fetchProducts} from "./components";
+import utils from "./utils.js";
 
 function updateTitle(title) {
     document.title = title ?? document.title;
 }
 async function loadProducts({params}) {
     const {category = ""} = params;
-    const {db, products} = await fetchProducts();
+    const {db, products} = await utils.fetchProducts();
     return Object.freeze({category, db, products});
 }
 const routes = [

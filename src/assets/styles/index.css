@@ -658,6 +658,10 @@ body {
         text-decoration: none;
         text-align: center;
 
+        &:where(a) {
+            display: inline-block;
+        }
+
         &:is(:focus-visible, :hover) {
             --color-fill: var(--system-color-paleOrange);
         }
@@ -666,9 +670,10 @@ body {
     .img-box {
         --color-fill: hsl(0, 0%, 94%);
         --radius: .5rem;
-        --min-padding: .5rem;
-        inline-size: 4rem;
-        aspect-ratio: 1;
+        --min-padding: var(--box-padding, .5rem);
+        inline-size: var(--box-size, 4rem);
+        aspect-ratio: var(--box-radio, 1);
+        max-block-size: var(--img-box-block-size, auto);
     }
 }
 

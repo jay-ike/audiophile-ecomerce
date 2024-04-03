@@ -23,15 +23,15 @@ const pick = propertiesPicker(["src", "width", "height"]);
 export const categoryAssets = Object.freeze({
     headphones: Object.assign(pick(homeHeadpone), {
         alt: "a black headphone branded K240 with a golden design on the microphone support",
-        link: ""
+        link: "/categories/headphone"
     }),
     speakers: Object.assign(pick(homeSpeaker[0]), {
         alt: "a black speaker branded Stein Music with 2 sound outputs of equal sizes",
-        link: ""
+        link: "/categories/speaker"
     }),
     earphones: Object.assign(pick(homeEarphone), {
         alt: "a black and circular earphone cover with a semi-circular opener",
-        link: ""
+        link: "/categories/earphone"
     }),
 });
 
