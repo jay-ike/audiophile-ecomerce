@@ -27,7 +27,7 @@ function CheckoutSummary(props) {
                                 <p>{formatter.formatCurrency(item.cost)}</p>
                                 <span aria-label={item.count + " item" + utils.plural(item.count)}>x{item.count}</span>
                                 <div class="img-box">
-                                    <img {...utils.copy(item.image).with({width: 48, height: 48})} />
+                                    <img {...utils.copy(utils.copy(item.image).with({width: 48, height: 48})).updateAttributes({url: "src"})} />
                                 </div>
                             </li>
                         )
@@ -69,7 +69,7 @@ function CheckoutSummary(props) {
 
 
 function CheckoutModal(props) {
-    const [navState] = getNavContext();
+    const [navState, {showCartModal}] = getNavContext();
     const text = {
         false: { state: true, val: () => "view less" },
         true: { state: false, val: (target) => remainingItems(target.nextElementSibling.childElementCount) }
@@ -99,7 +99,7 @@ function CheckoutModal(props) {
                                         <p>{formatter.formatCurrency(item.cost)}</p>
                                         <span aria-label={item.count + " item" + utils.plural(item.count)}>x{item.count}</span>
                                         <div class="img-box">
-                                            <img {...item.image} />
+                                            <img {...utils.copy(item.image).updateAttributes({url: "src"})} />
                                         </div>
                                     </li>
                                 )
@@ -112,7 +112,7 @@ function CheckoutModal(props) {
                     <dd><strong>$ 2,390</strong></dd>
                 </dl>
             </div>
-            <a class="btn-primary" href="/" data-outline-color="dark">back to home</a>
+            <a class="btn-primary" href="/" data-outline-color="dark" onClick={showCartModal}>back to home</a>
         </dialog>
     );
 }

@@ -131,6 +131,7 @@ body {
         --outline-style: dashed;
         text-transform: uppercase;
         font-weight: 700;
+        display: inline-block;
 
         &:not([class]) {
             --outline-style: dashed;
@@ -664,10 +665,6 @@ body {
         --min-padding: var(--btn-padding, 1em);
         text-decoration: none;
         text-align: center;
-
-        &:where(a) {
-            display: inline-block;
-        }
 
         &:is(:focus-visible, :hover) {
             --color-fill: var(--system-color-paleOrange);

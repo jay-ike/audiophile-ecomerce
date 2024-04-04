@@ -30,15 +30,16 @@ function Cart(entries = []) {
         return acc;
     }, Object.create(null));
     function addItem(id, data) {
+        let clone;
+        let dataClone;
         if (!data) {
             return new Cart(Object.entries(content));
         }
-        return updateContent(Object.assign({}, content), id, function(meta) {
-            let clone;
-            clone = Object.assign(meta ?? {}, data);
-            clone.count = (meta?.count ?? 0) + 1;
-            return clone;
-        });
+        clone = Object.assign({}, content);
+        dataClone = Object.assign({}, data);
+        dataClone.count = (clone[id]?.count ?? 0) + (dataClone.count ?? 1);
+        clone[id] = Object.assign(clone[id] ?? {}, dataClone);
+        return new Cart(Object.entries(clone));
     }
     function removeItem(id) {
         if (!content[id]) {
@@ -99,7 +100,7 @@ function NavProvider(props) {
     const [state, setState] = createSignal(
         {
             cartActive: props.cartActive ?? false,
-            cartItems: props.cartItems ?? new Cart(fakeItems),
+            cartItems: props.cartItems ?? new Cart(),
             menuOpened: props.menuOpened ?? false,
             preventCartReveal: props.hideCart ?? false
         }

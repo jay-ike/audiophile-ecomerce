@@ -1,4 +1,4 @@
-import { For, Show, createResource } from "solid-js";
+import { For, Show, createResource, createMemo } from "solid-js";
 import { useParams } from "@solidjs/router";
 import {
     BrandDescription,
@@ -6,7 +6,8 @@ import {
     Footer,
     ItemCounter,
     Header,
-    ProductDescription
+    ProductDescription,
+    getNavContext
 } from "../components";
 import utils from "../utils";
 import style from "../assets/styles/product.module.css";
@@ -23,8 +24,35 @@ async function fetchProduct(id) {
 }
 
 function ProductPage() {
+    let itemCount = 1;
     const params = useParams();
     const [state] = createResource(() => params.id, fetchProduct);
+    const [, {addToCart}] = getNavContext();
+    const cartItem = createMemo(function () {
+        let item = {};
+        if (state()?.product) {
+            item.id = state().product.id;
+            item.cost = state().product.price;
+            item.name = state().product.name;
+            item.image = state().product.image;
+        }
+        return item;
+    });
+
+    function incrementCount() {
+        itemCount += 1;
+    }
+
+    function decrementCount() {
+        itemCount -= 1;
+    }
+
+    function requestCartAddition() {
+        const clone = Object.assign({}, cartItem());
+        addToCart(Object.assign(clone, {count: itemCount}));
+    }
+
+
     return (
         <>
             <Header></Header>
@@ -34,9 +62,9 @@ function ProductPage() {
                         <p aria-label={"product price is " + formatter.formatCurrency(state().product.price)}>
                             <strong>{formatter.formatCurrency(state().product.price)}</strong>
                         </p>
-                        <div class={style["cart-counter"] + " row"}>
+                        <div class={style["cart-counter"] + " row"} on:counterincremented={incrementCount} on:counterdecremented={decrementCount}>
                             <ItemCounter></ItemCounter>
-                            <button className="btn-primary">add to cart</button>
+                            <button className="btn-primary" onClick={requestCartAddition}>add to cart</button>
                         </div>
                     </ProductDescription>
                     <div className={style["p-feat"] + " column"}>

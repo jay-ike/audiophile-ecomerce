@@ -1,4 +1,4 @@
-import { createEffect, For, onMount, Show } from "solid-js";
+import { createEffect, createMemo, For, onMount, Show } from "solid-js";
 import { Logo } from "./footer";
 import { getNavContext } from "./header.context.jsx";
 import Cathegories from "./cathegory.jsx";
@@ -36,6 +36,13 @@ function CartModal() {
     const [state, { addToCart, removeToCart, closeCart, toggleCart }] = getNavContext();
     const formatter = utils.getFormatter();
     let cancel;
+    const productCount = createMemo(function () {
+        const items = state().cartItems;
+        return Object.entries(items).reduce(function (acc, [key, val]) {
+            acc[key] = val.count;
+            return acc;
+        }, Object.create(null));
+    })
 
     createEffect(function() {
         if (state().cartActive) {
@@ -72,7 +79,7 @@ function CartModal() {
                         <button class="reset-btn">Remove all</button>
                     </div>
                     <ul class="not-empty column">
-                        <For each={state().cartItems.allItems()}>
+                        <For each={state().cartItems.allItems()} >
                             {
                                 (item) => (
                                     <li class="cart-item-grid">
@@ -80,7 +87,7 @@ function CartModal() {
                                         <p>{formatter.formatCurrency(item.cost)}</p>
                                         <ItemCounter initialValue={item.count} name={item.name} id={item.id} />
                                         <div class="img-box">
-                                            <img {...utils.copy(item.image).with({ width: 48, height: 48 })} />
+                                            <img {...utils.copy(utils.copy(item.image).with({ width: 48, height: 48 })).updateAttributes({url: "src"})} />
                                         </div>
                                     </li>
                                 )
