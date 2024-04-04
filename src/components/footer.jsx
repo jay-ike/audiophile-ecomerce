@@ -21,7 +21,7 @@ function Footer() {
             <p>
                 Audiophile is an all in one stop to fulfill your audio needs. We're a small team of music lovers and sound specialists who are devoted to helping you get the most out of personal audio. Come and visit our demo facility - we’re open 7 days a week.
             </p>
-            <p>copyright 2024. all rights reserved</p>
+            <p class="capitalize">copyright 2024. all rights allowed.</p>
             <ul class="row" role="list">
                 <li>
                     <a href="" aria-label="follow us on Github">

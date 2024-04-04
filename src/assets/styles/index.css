@@ -52,6 +52,7 @@ body {
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
+        max-inline-size: 100%;
     }
 
     h5 {
@@ -155,6 +156,8 @@ body {
         text-transform: uppercase;
         touch-action: manipulation;
         user-select: none;
+        min-block-size: 2rem;
+        min-inline-size: 2rem;
     }
 
     :focus-visible {
@@ -217,6 +220,10 @@ body {
 
     .no-shrink {
         flex-shrink: 0;
+    }
+
+    .s-gap-xl {
+        --s-space: 8rem;
     }
 
     :is(.not-empty:empty, .not-empty-sibling:where(.not-empty:empty ~ *, form:has(.not-empty:empty) *)) {
@@ -315,7 +322,7 @@ body {
         }
     }
 
-    :is(i, legend) {
+    :is(i, legend, span:where(.addon *):first-child) {
         color: var(--idiomatic-clr, var(--system-color-orange));
         letter-spacing: var(--idomatic-spacing, inherit);
         text-transform: uppercase;
@@ -346,8 +353,8 @@ body {
         background-color: hsl(0, 0%, 80%);
         display: inline-flex;
         gap: .15rem;
-        max-block-size: 2rem;
         padding: .5em;
+        align-content: center;
 
         &>input {
             max-inline-size: 3rem;

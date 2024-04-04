@@ -50,7 +50,7 @@ function CategoriesPage() {
                         }
                     </For>
                 </Show>
-                <Categories class="xl-show" />
+                <Categories class="xl-show s-gap-xl" />
                 <BrandDescription />
             </main>
             <Footer />

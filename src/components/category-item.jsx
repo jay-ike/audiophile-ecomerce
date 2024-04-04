@@ -1,21 +1,11 @@
 import { Show } from "solid-js";
+import utils from "../utils";
 
 function ProductDescription(props) {
-    const imageData = Object.entries(props.data.image).reduce(
-        function (acc, [key, val]) {
-            if (key === "url") {
-                acc.src = val;
-            } else {
-                acc[key] = val;
-            }
-            return acc;
-        },
-        Object.create(null)
-    );
     return (
         <section class={(props.class ?? "") + " column"}>
             <div class="img-box">
-                <img {...imageData} />
+                <img {...utils.copy(props.data.image).updateAttributes({url: "src"})} />
             </div>
             <div class="stack">
                 <Show when={props.data["new-product"]}><i>new product</i></Show>

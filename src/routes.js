@@ -21,6 +21,10 @@ const routes = [
     {
         component: lazy(() => import("./pages/category.jsx")),
         path: "/categories/:category"
+    },
+    {
+        component: lazy(() => import("./pages/product.jsx")),
+        path: "/product/:id"
     }
 ];
 

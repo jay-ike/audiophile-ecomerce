@@ -1,11 +1,11 @@
 /*jslint browser*/
-import {openDB} from "./idb-min.js";
-const {DOMException, Storage, btoa, console, localStorage} = window;
+import { openDB } from "./idb-min.js";
+const { DOMException, Storage, btoa, console, localStorage } = window;
 
 const plural = (count) => (
     count > 1
-    ? "s"
-    : ""
+        ? "s"
+        : ""
 );
 function copy(object) {
     return Object.freeze({
@@ -14,6 +14,20 @@ function copy(object) {
                 Object.assign({}, object ?? {}),
                 newDatas ?? {}
             );
+        },
+        updateAttributes(attributesMap = {}) {
+            return Object.entries(object).reduce(
+                function(acc, [key, val]) {
+                    if (attributesMap[key]) {
+                        acc[attributesMap[key]] = val;
+                    } else {
+                        acc[key] = val;
+                    }
+                    return acc;
+                },
+                Object.create(null)
+            );
+
         }
     });
 }
@@ -21,11 +35,11 @@ function copy(object) {
 function getFormatter() {
     let dateFormatter = new Intl.DateTimeFormat(
         navigator.language,
-        {day: "numeric", month: "short", year: "numeric"}
+        { day: "numeric", month: "short", year: "numeric" }
     );
     let currencyFormatter = new Intl.NumberFormat(
         navigator.language,
-        {currency: "USD", style: "currency"}
+        { currency: "USD", style: "currency" }
     );
 
     return Object.freeze({
@@ -66,7 +80,7 @@ function shippingCost(cartAmount) {
 
 
 function upserter(db, store, keyFn) {
-    return async function (value) {
+    return async function(value) {
         let oldValue = await db.get(store, keyFn(value));
         oldValue = Object.assign(oldValue ?? {}, value);
         await db.put(store, oldValue);
@@ -124,9 +138,9 @@ async function createDb(dbName = "jay-ike_shop", version = 1) {
         upgrade: function upgrade(db) {
             db.createObjectStore(
                 product_store,
-                {keyPath: "id"}
-            ).createIndex("category", "category", {unique: false});
-            db.createObjectStore(order_store, {keyPath: "timestamp"});
+                { keyPath: "id" }
+            ).createIndex("category", "category", { unique: false });
+            db.createObjectStore(order_store, { keyPath: "timestamp" });
         }
     });
     result.bulkUpsert = async function insertMany(products) {
@@ -149,10 +163,10 @@ async function createDb(dbName = "jay-ike_shop", version = 1) {
         return request.filter((elt) => categories.includes(elt.status));
     };
     result.deleteProduct = (id) => db.delete(product_store, id);
-    result.saveCart = function (cart) {
+    result.saveCart = function(cart) {
         cartStore.set(cartKey, cart);
     };
-    result.getCart = function () {
+    result.getCart = function() {
         cartStore.get(cartKey);
     };
     return Object.freeze(result);
@@ -163,7 +177,7 @@ async function fetchData(url, options, timeout) {
     let response;
     let success;
     const defaultOptions = {
-        headers: {"content-type": "application/json"},
+        headers: { "content-type": "application/json" },
         method: "GET",
         signal: controller.signal
     };
@@ -177,9 +191,9 @@ async function fetchData(url, options, timeout) {
         );
         success = response.ok;
         response = await response.json();
-        return Object.assign({success}, response);
+        return Object.assign({ success }, response);
     } catch (error) {
-        return Object.assign({success: false}, {message: error.message});
+        return Object.assign({ success: false }, { message: error.message });
     }
 
 }
@@ -205,12 +219,32 @@ async function fetchProducts() {
     return { db, products };
 }
 
+function getRelatedProducts(products, id) {
+    const result = {};
+    const indexes = new Uint8Array(3);
+    const withoutId = products.filter((prod) => prod.id !== id);
+    crypto.getRandomValues(indexes);
+    indexes.forEach(function (val) {
+        let count = 0;
+        let index = val;
+        let product = withoutId[index % withoutId.length];
+        while (result[product.id] && count < withoutId.length) {
+            index += 1;
+            product = withoutId[index % withoutId.length];
+            count += 1;
+        }
+        result[product.id] = product;
+    });
+    return Object.values(result);
+}
+
 export default Object.freeze({
     copy,
     createDb,
     fetchData,
     fetchProducts,
     getFormatter,
+    getRelatedProducts,
     getTax,
     plural,
     shippingCost,

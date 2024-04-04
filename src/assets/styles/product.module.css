@@ -1,4 +1,3 @@
-
 .product-desc {
     --box-size: auto;
     --box-padding: 2rem;
@@ -7,7 +6,7 @@
     --s-space: 3rem;
     --idomatic-spacing: .5em;
 
-    & > :not(p) {
+    &> :not(p) {
         --s-space: 1rem;
     }
 
@@ -18,7 +17,71 @@
     }
 }
 
-@media screen and (min-width: 768px){
+.p-preview>* {
+    --f: 1.2;
+    inline-size: 100%;
+    object-fit: cover;
+    object-position: top 0% left 10%;
+    clip-path: inset(0 round .5rem);
+
+    &:hover {
+        transform: scale(var(--f));
+        clip-path: inset(calc((1 - 1 / var(--f)) * 50%) round .5rem);
+    }
+}
+
+.cart-counter {
+    --i-alignment: start;
+    --alignment: stretch;
+}
+
+.p-related {
+    --row-dir: column;
+    --box-size: 100cqi;
+    --img-box-block-size: 318px;
+    --alignment: stretch;
+
+    &>* {
+        --btn-padding: .5em;
+        display: grid;
+        place-items: center;
+        gap: 1rem;
+        container: related-product / inline-size;
+    }
+
+    & img {
+        object-fit: contain;
+        aspect-ratio: 1;
+    }
+}
+
+@media screen and (min-width: 480px) {
+    .p-related {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .p-preview {
+        display: grid;
+        grid-template: "area1 area3" 1fr "area2 area3" 1fr / 1fr 1.5fr;
+        max-block-size: 480px;
+        gap: 1rem;
+
+        &> :first-child {
+            grid-area: area1;
+        }
+
+        &> :nth-child(2) {
+            grid-area: area2;
+        }
+
+        &> :last-child {
+            grid-area: area3;
+        }
+    }
+}
+
+@media screen and (min-width: 768px) {
 
     .product-desc {
         --col-dir: row;
@@ -30,15 +93,34 @@
         &:nth-of-type(even) {
             --col-dir: row-reverse;
         }
-        & > :first-child {
+
+        &> :first-child {
             aspect-ratio: 0.96;
             flex: 0 1.2 calc((1 / 0.96) * var(--img-box-block-size));
         }
-        & > :last-child {
+
+        &> :last-child {
             flex-basis: 38ch;
             align-self: center;
         }
-
     }
 
+    .p-feat {
+        --col-dir: row;
+
+        &> :first-child {
+            flex-grow: 2;
+        }
+
+        &> :not(:first-child) {
+            flex-grow: 1.5;
+        }
+    }
+
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    img:where(.p-preview *) {
+        transition: all .35s ease-out;
+    }
 }
