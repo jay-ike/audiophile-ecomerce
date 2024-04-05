@@ -48,7 +48,7 @@ body {
         --f-size: 1.75rem;
     }
 
-    h4 {
+    :where(h4, .visually-hidden) {
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
@@ -157,6 +157,9 @@ body {
         text-transform: uppercase;
         touch-action: manipulation;
         user-select: none;
+    }
+
+    button:not([data-icon], .reset-btn) {
         min-block-size: 2rem;
         min-inline-size: 2rem;
     }
@@ -343,6 +346,7 @@ body {
     :where([aria-hidden="true"], .visually-hidden, .xl-show, .pm-grid input[type="radio"]) {
         position: absolute;
         clip-path: inset(50%);
+        max-inline-size: 1px;
     }
 
     .item-counter {
@@ -354,17 +358,18 @@ body {
         background-color: hsl(0, 0%, 80%);
         display: inline-flex;
         gap: .15rem;
-        padding: .5em;
+        padding: min(2cqi, .5em);
         align-content: center;
 
         &>input {
-            max-inline-size: 3rem;
+            max-inline-size: min(10cqi, 3rem);
             border: none;
             text-align: center;
             padding: 0;
             font-weight: bold;
             color: inherit;
             background-color: transparent;
+            flex-shrink: 2;
         }
     }
 

@@ -19,11 +19,15 @@ const shownCount = (count) => (
         : count
 );
 
-const getCartState = (oldItems, newItems) => (
-    oldItems > newItems
-        ? "reduced"
-        : "added"
-);
+function getCartState(oldItems, newItems) {
+    if (oldItems > newItems) {
+        return "reduced";
+    }
+    if (oldItems < newItems) {
+        return "added";
+    }
+    return "iddle";
+}
 
 function handleAnimation(event) {
     const { target } = event;
@@ -33,17 +37,18 @@ function handleAnimation(event) {
 }
 
 function CartModal() {
-    const [state, { addToCart, removeToCart, closeCart, toggleCart }] = getNavContext();
+    const [state, { addToCart, emptyCart, removeToCart, closeCart, toggleCart }] = getNavContext();
     const formatter = utils.getFormatter();
+    const items = createMemo(function () {
+        return Object.entries(state().cartItems).reduce(
+            function (acc, [key, val]) {
+                acc[key] = val.count;
+                return acc;
+            },
+            {}
+        );
+    });
     let cancel;
-    const productCount = createMemo(function () {
-        const items = state().cartItems;
-        return Object.entries(items).reduce(function (acc, [key, val]) {
-            acc[key] = val.count;
-            return acc;
-        }, Object.create(null));
-    })
-
     createEffect(function() {
         if (state().cartActive) {
             cancel.focus();
@@ -76,7 +81,7 @@ function CartModal() {
                 <form action="" class="column" on:counterincremented={incrementItem} on:counterdecremented={decrementItem}>
                     <div class="segragator not-empty-sibling">
                         <h4>Cart ({state().cartItems.itemsCount()})</h4>
-                        <button class="reset-btn">Remove all</button>
+                        <button type="button" class="reset-btn" onClick={emptyCart}>Remove all</button>
                     </div>
                     <ul class="not-empty column">
                         <For each={state().cartItems.allItems()} >
@@ -85,7 +90,7 @@ function CartModal() {
                                     <li class="cart-item-grid">
                                         <h4>{item.name}</h4>
                                         <p>{formatter.formatCurrency(item.cost)}</p>
-                                        <ItemCounter initialValue={item.count} name={item.name} id={item.id} />
+                                        <ItemCounter value={items()[item.id]} name={item.name} id={item.id} />
                                         <div class="img-box">
                                             <img {...utils.copy(utils.copy(item.image).with({ width: 48, height: 48 })).updateAttributes({url: "src"})} />
                                         </div>

@@ -1,5 +1,5 @@
 import { createContext, createSignal, useContext } from "solid-js";
-import {categoryAssets} from "./assets.map.jsx";
+import { categoryAssets } from "./assets.map.jsx";
 import utils from "../utils.js"
 
 const NavContext = createContext({ items: 0, opened: false });
@@ -26,7 +26,7 @@ function updateContent(content, key, fn) {
 }
 function Cart(entries = []) {
     const content = entries.reduce(function itemReducer(acc, [key, val]) {
-        acc[key] = Object.assign(val, {id: key});
+        acc[key] = Object.assign(val, { id: key });
         return acc;
     }, Object.create(null));
     function addItem(id, data) {
@@ -55,6 +55,9 @@ function Cart(entries = []) {
             return clone;
         });
     }
+    function clearCart() {
+        return new Cart([]);
+    }
 
     function allItems() {
         return Object.values(content);
@@ -74,22 +77,32 @@ function Cart(entries = []) {
     Object.defineProperties(content, {
         addItem: {
             value: addItem,
+            enumerable: false,
             writable: false
         },
-         allItems: {
+        allItems: {
             value: allItems,
+            enumarable: false,
+            writable: false
+        },
+        emptyCart: {
+            value: clearCart,
+            enumerable: false,
             writable: false
         },
         itemsCount: {
             value: itemsCount,
+            enumarable: false,
             writable: false
         },
         removeItem: {
             value: removeItem,
+            enumarable: false,
             writable: false
         },
         totalCost: {
             value: totalCost,
+            enumarable: false,
             writable: false
         }
     });
@@ -118,6 +131,11 @@ function NavProvider(props) {
             },
             closeMenu() {
                 setState(utils.storeUpdater("menuOpened", () => false));
+            },
+            emptyCart() {
+                setState(
+                    utils.storeUpdater("cartItems", (item) => item.emptyCart())
+                );
             },
             hideCartModal() {
                 setState(utils.storeUpdater("preventCartReveal", () => true));
