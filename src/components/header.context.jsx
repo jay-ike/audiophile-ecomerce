@@ -59,6 +59,10 @@ function Cart(entries = []) {
         return new Cart([]);
     }
 
+    function setCart(obj) {
+        return new Cart(Object.entries(obj ?? {}));
+    }
+
     function allItems() {
         return Object.values(content);
     }
@@ -97,6 +101,11 @@ function Cart(entries = []) {
         },
         removeItem: {
             value: removeItem,
+            enumarable: false,
+            writable: false
+        },
+        setCart: {
+            value: setCart,
             enumarable: false,
             writable: false
         },
@@ -139,6 +148,12 @@ function NavProvider(props) {
             },
             hideCartModal() {
                 setState(utils.storeUpdater("preventCartReveal", () => true));
+            },
+            initializeCart(data) {
+                setState(utils.storeUpdater(
+                    "cartItems",
+                    (item) => item.setCart(data ?? {})
+                ));
             },
             openCart() {
                 setState(utils.storeUpdater("cartActive", () => true));

@@ -14,19 +14,19 @@ const sectionContents = {
         content: "Upgrade to premium speakers that are phenomenally built to deliver truly remarkable sound.",
         heading: "ZX9 SPEAKER",
         image: homeAssets.featuredProduct,
-        link: ""
+        link: "/product/853262f1-024e-4275-9141-936bef98cabb"
     },
     secondProduct: {
         classValue: styles["product-2"],
         heading: "ZX7 SPEAKER",
         image: homeAssets.speaker,
-        link: ""
+        link: "/product/6f7c56a5-3b57-4036-8205-f22e9d90d60e"
     },
     thirdProduct: {
         classValue: styles["third-product"],
         heading: "yx1 earphones",
         image: homeAssets.earphone,
-        link: ""
+        link: "/product/6ce8a43d-0e8d-466d-9364-794cc0d382b7"
     }
 };
 
@@ -44,7 +44,7 @@ function App() {
                         <h1>XX99 Mark II
                             <br /> HeadphoneS</h1>
                         <p>Experience natural, lifelike audio and exceptional build quality made for the passionate music enthusiast.</p>
-                        <a href="" class="box">see product</a>
+                        <a href="/product/51491bae-0c7e-4e9b-a032-b45786ca644b" class="box">see product</a>
                     </div>
                 </header>
                 <Categories class="xl-show"/>

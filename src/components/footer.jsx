@@ -13,10 +13,10 @@ function Footer() {
         <footer>
             <Logo />
             <ul class="column" role="list">
-                <li><a href="">home</a></li>
-                <li><a href="">headphones</a></li>
-                <li><a href="">speakers</a></li>
-                <li><a href="">earphones</a></li>
+                <li><a href="/">home</a></li>
+                <li><a href="/categories/headphone">headphones</a></li>
+                <li><a href="/categories/speaker">speakers</a></li>
+                <li><a href="/categories/earphone">earphones</a></li>
             </ul>
             <p>
                 Audiophile is an all in one stop to fulfill your audio needs. We're a small team of music lovers and sound specialists who are devoted to helping you get the most out of personal audio. Come and visit our demo facility - we’re open 7 days a week.

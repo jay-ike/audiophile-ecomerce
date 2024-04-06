@@ -1,4 +1,4 @@
-import { For, Show, createResource, createMemo } from "solid-js";
+import { For, Show, createSignal, createResource, createMemo } from "solid-js";
 import { useParams } from "@solidjs/router";
 import {
     BrandDescription,
@@ -24,46 +24,55 @@ async function fetchProduct(id) {
 }
 
 function ProductPage() {
-    let itemCount = 1;
     const params = useParams();
     const [state] = createResource(() => params.id, fetchProduct);
-    const [, {addToCart}] = getNavContext();
-    const cartItem = createMemo(function () {
-        let item = {};
-        if (state()?.product) {
-            item.id = state().product.id;
-            item.cost = state().product.price;
-            item.name = state().product.name;
-            item.image = state().product.image;
-        }
-        return item;
+    const [, { addToCart }] = getNavContext();
+    const [item, setItem] = createSignal({
+        count: 1,
     });
+    const productInfo = function() {
+        return {
+            cost: state().product?.price,
+            id: state().product?.id,
+            image: state().product?.image,
+            name: state().product?.name
+        }
+    };
 
-    function incrementCount() {
-        itemCount += 1;
+    function incrementCount(item) {
+        const clone = productInfo();
+        clone.count = item.count + 1;
+        return clone;
     }
 
-    function decrementCount() {
-        itemCount -= 1;
+    function decrementCount(item) {
+        const clone = utils.clone(item);
+        if (clone.count > 0) {
+            clone.count = item.count - 1;
+        }
+        return clone;
     }
 
     function requestCartAddition() {
-        const clone = Object.assign({}, cartItem());
-        addToCart(Object.assign(clone, {count: itemCount}));
+        const clone = utils.clone(item());
+        addToCart(item());
+        clone.count = 0;
+        setItem(clone);
     }
 
 
     return (
         <>
             <Header></Header>
-            <main class="stack">
+            <main class={style["product-stack"]}>
+                <a href={""} class="back-btn capitalize">go back</a>
                 <Show when={state()?.product} fallback={<p>loading ...</p>} >
                     <ProductDescription class={style["product-desc"]} isPrimary={true} data={state().product}>
                         <p aria-label={"product price is " + formatter.formatCurrency(state().product.price)}>
                             <strong>{formatter.formatCurrency(state().product.price)}</strong>
                         </p>
-                        <div class={style["cart-counter"] + " row"} on:counterincremented={incrementCount} on:counterdecremented={decrementCount}>
-                            <ItemCounter></ItemCounter>
+                        <div class={style["cart-counter"] + " row"} on:counterincremented={() => setItem(incrementCount)} on:counterdecremented={() => setItem(decrementCount)}>
+                            <ItemCounter value={item().count} name={state().product.name} id={state().product.id}></ItemCounter>
                             <button className="btn-primary" onClick={requestCartAddition}>add to cart</button>
                         </div>
                     </ProductDescription>
@@ -103,21 +112,23 @@ function ProductPage() {
                             }
                         </For>
                     </div>
-                    <h3>you may also like</h3>
-                    <div className={style["p-related"] + " row"}>
-                        <For each={state().relateds}>
-                            {
-                                (product) => (
-                                    <div>
-                                        <div className="img-box">
-                                            <img {...utils.copy(product.image).updateAttributes({ url: "src" })} />
+                    <div className="stack">
+                        <h3>you may also like</h3>
+                        <div className={style["p-related"] + " row"}>
+                            <For each={state().relateds}>
+                                {
+                                    (product) => (
+                                        <div>
+                                            <div className="img-box">
+                                                <img {...utils.copy(product.image).updateAttributes({ url: "src" })} />
+                                            </div>
+                                            <h4>{product.name}</h4>
+                                            <a href={"/product/" + product.id} className="btn-primary">see product</a>
                                         </div>
-                                        <h4>{product.name}</h4>
-                                        <a href={"/product/" + product.id} className="btn-primary">see product</a>
-                                    </div>
-                                )
-                            }
-                        </For>
+                                    )
+                                }
+                            </For>
+                        </div>
                     </div>
                 </Show>
                 <Categories class="xl-show s-gap-xl" />

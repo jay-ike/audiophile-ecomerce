@@ -346,6 +346,9 @@ body {
     :where([aria-hidden="true"], .visually-hidden, .xl-show, .pm-grid input[type="radio"]) {
         position: absolute;
         clip-path: inset(50%);
+    }
+
+    .visually-hidden {
         max-inline-size: 1px;
     }
 
@@ -450,7 +453,7 @@ body {
         --right-x: clamp(5vi, calc(1110px - 100vi), 5vi);
         --color-fill: var(--system-color-white);
         --radius: .5rem;
-        --modal-size: min(88vi, 377px);
+        --modal-size: min(88vi, 480px);
         --translation: translateY(-50vb);
         --c-space: 1rem;
 
@@ -492,6 +495,12 @@ body {
 
     .no-gap {
         --r-space: 0;
+    }
+
+    .back-btn {
+        --min-padding: 1.5em 0;
+        font-weight: 200;
+        color: var(--link-clr);
     }
 
     :is(.no-padding, .reset-btn) {

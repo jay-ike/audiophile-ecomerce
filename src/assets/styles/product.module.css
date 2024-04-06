@@ -1,9 +1,12 @@
+.product-stack > * + * {
+    margin-block-start: var(--s-space, min(10vb, 4.5rem));
+}
 .product-desc {
     --box-size: auto;
     --box-padding: 2rem;
     --img-box-block-size: 352px;
     --btn-padding: .75em;
-    --s-space: 3rem;
+    --s-space: min(5vb, 3rem);
     --idomatic-spacing: .5em;
 
     &> :not(p) {

@@ -39,9 +39,9 @@ function handleAnimation(event) {
 function CartModal() {
     const [state, { addToCart, emptyCart, removeToCart, closeCart, toggleCart }] = getNavContext();
     const formatter = utils.getFormatter();
-    const items = createMemo(function () {
+    const items = createMemo(function() {
         return Object.entries(state().cartItems).reduce(
-            function (acc, [key, val]) {
+            function(acc, [key, val]) {
                 acc[key] = val.count;
                 return acc;
             },
@@ -92,7 +92,7 @@ function CartModal() {
                                         <p>{formatter.formatCurrency(item.cost)}</p>
                                         <ItemCounter value={items()[item.id]} name={item.name} id={item.id} />
                                         <div class="img-box">
-                                            <img {...utils.copy(utils.copy(item.image).with({ width: 48, height: 48 })).updateAttributes({url: "src"})} />
+                                            <img {...utils.copy(utils.copy(item.image).with({ width: 48, height: 48 })).updateAttributes({ url: "src" })} />
                                         </div>
                                     </li>
                                 )
@@ -121,12 +121,12 @@ function CartModal() {
 
 function Header(props) {
     const links = [
-        {title:"home", path: "/"},
-        {title: "headphones", path: "/categories/headphone"},
-        {title: "speakers", path: "/categories/speaker"},
-        {title: "earphones", path: "/categories/earphone"}
+        { title: "home", path: "/" },
+        { title: "headphones", path: "/categories/headphone" },
+        { title: "speakers", path: "/categories/speaker" },
+        { title: "earphones", path: "/categories/earphone" }
     ];
-    const [state, { closeMenu, toggleMenu, toggleCart }] = getNavContext();
+    const [state, { closeMenu, initializeCart, toggleMenu, toggleCart }] = getNavContext();
     const components = {};
     const observer = new ResizeObserver(function(entries) {
         entries.forEach(function(entry) {
@@ -139,6 +139,7 @@ function Header(props) {
             }
         });
     });
+    let db;
 
     createEffect(function(oldState) {
         let newState = oldState ?? {};
@@ -155,6 +156,7 @@ function Header(props) {
         if (canUpdateCount) {
             components.cart.dataset.items = shownCount(totalItems);
             components.cart.dataset.cart = getCartState(oldState?.count, totalItems);
+            storeCart(db, state().cartItems);
             return Object.assign(newState, { count: totalItems });
         }
         if (state().menuOpened !== oldState?.menuOpened) {
@@ -171,9 +173,21 @@ function Header(props) {
         return oldState;
     });
 
-    onMount(function() {
+    onMount(async function() {
         observer.observe(document.documentElement);
+        db = await utils.createDb();
+        if (db.getCart() !== undefined) {
+            initializeCart(db.getCart());
+        }
     });
+
+    function storeCart(db, data) {
+        if (typeof db?.saveCart === "function") {
+            db.saveCart(data ?? {});
+        }
+
+    }
+
     function toggleCartModal() {
         if (!state().menuOpened) {
             toggleCart();

@@ -167,7 +167,7 @@ async function createDb(dbName = "jay-ike_shop", version = 1) {
         cartStore.set(cartKey, cart);
     };
     result.getCart = function() {
-        cartStore.get(cartKey);
+        return cartStore.get(cartKey);
     };
     return Object.freeze(result);
 }
@@ -238,8 +238,13 @@ function getRelatedProducts(products, id) {
     return Object.values(result);
 }
 
+function clone(obj) {
+    return Object.assign({}, obj);
+}
+
 export default Object.freeze({
     copy,
+    clone,
     createDb,
     fetchData,
     fetchProducts,
