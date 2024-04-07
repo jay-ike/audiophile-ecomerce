@@ -1,5 +1,6 @@
 import { createSignal, For } from "solid-js";
-import { CheckoutModal, CheckoutSummary, Footer, Header} from "../components";
+import {useBeforeLeave} from "@solidjs/router";
+import { CheckoutModal, CheckoutSummary, Footer, Header, getNavContext} from "../components";
 import icons from "../assets/icons.svg";
 import style from "../assets/styles/checkout.module.css";
 
@@ -67,13 +68,17 @@ function Indicator(props) {
 
 function CheckoutPage() {
     const components = Object.create(null);
+    const [, {showCartModal}] = getNavContext();
     const [currentStep, setStep] = createSignal(0);
 
-    function requestNextFormStep() {
+    function getInputFields() {
         const selector = "step-by-step > :not(.step-out) :is(input,select)";
-        let inputFields = Array.from(components.form.querySelectorAll(selector));
-        if (allFieldsValid(inputFields)) {
-            components.form.firstElementChild.nextStep();
+        return Array.from(components.form.querySelectorAll(selector));
+    }
+
+    function requestNextFormStep() {
+        if (allFieldsValid(getInputFields())) {
+            components.form.querySelector("step-by-step").nextStep();
         }
     }
 
@@ -104,7 +109,7 @@ function CheckoutPage() {
     }
 
     function previousStep() {
-        components.form.firstElementChild.previousStep();
+        components.form.querySelector("step-by-step").previousStep();
     }
 
     function handleChange({ target }) {
@@ -122,8 +127,14 @@ function CheckoutPage() {
     }
 
     function paymentRequested() {
-        components.dialog.showModal();
+        if(allFieldsValid(getInputFields())) {
+            components.dialog.showModal();
+        }
     }
+
+    useBeforeLeave(function () {
+        showCartModal();
+    });
 
     return (
         <>

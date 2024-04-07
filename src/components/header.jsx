@@ -145,20 +145,20 @@ function Header(props) {
         let newState = oldState ?? {};
         const totalItems = state().cartItems.itemsCount();
         const canUpdateCount = (
-            totalItems > 0 &&
+            totalItems >= 0 &&
             state().cartItems.itemsCount() !== oldState?.count &&
             !state().preventCartReveal
         );
+        if (canUpdateCount) {
+            components.cart.dataset.items = shownCount(totalItems);
+            storeCart(db, state().cartItems);
+            components.cart.dataset.cart = getCartState(oldState?.count, totalItems);
+            return Object.assign(newState, { count: totalItems });
+        }
         if (totalItems <= 0 || state().preventCartReveal) {
             delete components.cart.dataset.items;
         }
 
-        if (canUpdateCount) {
-            components.cart.dataset.items = shownCount(totalItems);
-            components.cart.dataset.cart = getCartState(oldState?.count, totalItems);
-            storeCart(db, state().cartItems);
-            return Object.assign(newState, { count: totalItems });
-        }
         if (state().menuOpened !== oldState?.menuOpened) {
             document.documentElement.dataset.menuOpened = state().menuOpened;
             return Object.assign(newState, { menuOpened: state().menuOpened });

@@ -69,7 +69,8 @@ function CheckoutSummary(props) {
 
 
 function CheckoutModal(props) {
-    const [navState, {showCartModal}] = getNavContext();
+    let db;
+    const [navState, {emptyCart}] = getNavContext();
     const text = {
         false: { state: true, val: () => "view less" },
         true: { state: false, val: (target) => remainingItems(target.nextElementSibling.childElementCount) }
@@ -78,6 +79,19 @@ function CheckoutModal(props) {
         let context = text[target.getAttribute("aria-pressed")];
         target.textContent = context.val(target);
         target.setAttribute("aria-pressed", context.state);
+    }
+    onMount(async function () {
+        db = await utils.createDb();
+    });
+    async function closeCheckout() {
+        const savedCart =  utils.clone(navState().cartItems);
+        savedCart.totalCost = navState().cartItems.totalCost();
+        savedCart.totalCost += utils.shippingCost(savedCart.totalCost);
+        savedCart.timestamp = Date.now();
+        if (typeof db.upsertOrder === "function") {
+            await db.upsertOrder(savedCart);
+            emptyCart();
+        }
     }
     return (
         <dialog class={style["c-dialog"] + " column box"} ref={props.ref} data-icon-position="start" data-icon="check-circle" aria-labelledby="title" onCancel={(event) => event.preventDefault()}>
@@ -112,7 +126,7 @@ function CheckoutModal(props) {
                     <dd><strong>$ 2,390</strong></dd>
                 </dl>
             </div>
-            <a class="btn-primary" href="/" data-outline-color="dark" onClick={showCartModal}>back to home</a>
+            <a class="btn-primary" href="/" data-outline-color="dark" onClick={closeCheckout}>back to home</a>
         </dialog>
     );
 }

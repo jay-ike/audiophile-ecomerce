@@ -1,4 +1,4 @@
-import { For, Show, createSignal, createResource, createMemo } from "solid-js";
+import { For, Show, createSignal, createResource } from "solid-js";
 import { useParams } from "@solidjs/router";
 import {
     BrandDescription,
@@ -54,18 +54,18 @@ function ProductPage() {
     }
 
     function requestCartAddition() {
-        const clone = utils.clone(item());
-        addToCart(item());
+        let clone = productInfo();
+        clone.count = item().count;
+        addToCart(clone);
         clone.count = 0;
         setItem(clone);
     }
-
 
     return (
         <>
             <Header></Header>
             <main class={style["product-stack"]}>
-                <a href={""} class="back-btn capitalize">go back</a>
+                <a href={"/categories/" + (state()?.product?.category ?? "")} class="back-btn capitalize">go back</a>
                 <Show when={state()?.product} fallback={<p>loading ...</p>} >
                     <ProductDescription class={style["product-desc"]} isPrimary={true} data={state().product}>
                         <p aria-label={"product price is " + formatter.formatCurrency(state().product.price)}>
