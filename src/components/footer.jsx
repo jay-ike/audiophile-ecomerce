@@ -24,7 +24,7 @@ function Footer() {
             <p class="capitalize">copyright 2024. all rights allowed.</p>
             <ul class="row" role="list">
                 <li>
-                    <a href="" aria-label="follow us on Github">
+                    <a href="https://github.com/jay-ike" aria-label="follow us on Github">
                         <svg width="24" height="24">
                             <title>Github Logo</title>
                             <use href={sprites + "#github"} />
@@ -32,7 +32,7 @@ function Footer() {
                     </a>
                 </li>
                 <li>
-                    <a href="" aria-label="follow us on Mastodon">
+                    <a href="https://mastodon.social/@ndimah22" aria-label="follow us on Mastodon">
                         <svg width="24" height="24">
                             <title>Mastodon Logo</title>
                             <use href={sprites + "#mastodon"} />
@@ -40,7 +40,7 @@ function Footer() {
                     </a>
                 </li>
                 <li>
-                    <a href="" aria-label="follow us on Twitter">
+                    <a href="https://twitter.com/jospinEvans" aria-label="follow us on Twitter">
                         <svg width="24" height="24">
                             <title>X formerly Twitter Logo</title>
                             <use href={sprites + "#twitter"} />

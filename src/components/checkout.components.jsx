@@ -1,4 +1,4 @@
-import { For, Show, onMount } from "solid-js";
+import { For, Show, createMemo, onMount } from "solid-js";
 import { getNavContext } from "./header.context.jsx";
 import icons from "../assets/icons.svg";
 import style from "../assets/styles/checkout.module.css";
@@ -61,7 +61,7 @@ function CheckoutSummary(props) {
                     <dd>{formatter.formatCurrency(utils.shippingCost(navState().cartItems.totalCost()) + navState().cartItems.totalCost())}</dd>
                 </div>
             </dl>
-            <button type="button" class="btn-primary" onClick={props.onPayment}>continue & pay</button>
+            <button type="button" class="btn-primary" disabled={props.canNotPay ?? true} onClick={props.onPayment}>continue & pay</button>
         </div>
     );
 }
@@ -75,6 +75,10 @@ function CheckoutModal(props) {
         false: { state: true, val: () => "view less" },
         true: { state: false, val: (target) => remainingItems(target.nextElementSibling.childElementCount) }
     };
+    const totalCost = createMemo(function () {
+        let cost = navState().cartItems.totalCost();
+        return formatter.formatCurrency(utils.shippingCost(cost) + cost);
+    });
     function updateShowState({ target }) {
         let context = text[target.getAttribute("aria-pressed")];
         target.textContent = context.val(target);
@@ -84,10 +88,10 @@ function CheckoutModal(props) {
         db = await utils.createDb();
     });
     async function closeCheckout() {
-        const savedCart =  utils.clone(navState().cartItems);
+        const savedCart = {timestamp: window.performance.now()};
+        savedCart.cart =  utils.clone(navState().cartItems);
         savedCart.totalCost = navState().cartItems.totalCost();
         savedCart.totalCost += utils.shippingCost(savedCart.totalCost);
-        savedCart.timestamp = Date.now();
         if (typeof db.upsertOrder === "function") {
             await db.upsertOrder(savedCart);
             emptyCart();
@@ -123,7 +127,7 @@ function CheckoutModal(props) {
                 </div>
                 <dl class={style["total-box"]}>
                     <dt>grand total</dt>
-                    <dd><strong>$ 2,390</strong></dd>
+                    <dd><strong>{totalCost()}</strong></dd>
                 </dl>
             </div>
             <a class="btn-primary" href="/" data-outline-color="dark" onClick={closeCheckout}>back to home</a>

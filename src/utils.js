@@ -70,7 +70,7 @@ function getFormatter() {
     });
 }
 function getTax(amount) {
-    const result = Number.parseFloat(0.1925 * amount);
+    const result = Number.parseFloat(0.2 * amount);
     return result.toFixed(2);
 }
 

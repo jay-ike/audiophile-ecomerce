@@ -1,3 +1,26 @@
+step-by-step {
+    --c-space: 1em;
+    position: relative;
+    display: block;
+    overflow-inline: clip;
+    padding: .25rem;
+
+    &>* {
+        transform: translateX(calc((var(--i) - var(--current)) * 100%));
+    }
+
+    &>[class~="step-out"] {
+        position: fixed;
+        z-index: -1;
+        visibility: hidden;
+        opacity: 0;
+    }
+}
+
+:is(.light-bg, .c-form) {
+    border-image: linear-gradient(hsl(0, 0%, 95%), hsl(0, 0%, 95%)) 1 fill / 1 / 50vh;
+}
+
 .step-indicator {
     --deco-size: 1.7em;
     --bdr-width: 2px;
@@ -172,14 +195,14 @@
     --f-size: 1.25rem;
     --items-clr: hsl(0, 0%, 33%);
 
-    & > button {
+    &>button {
         --min-padding: .5rem .5rem 0;
         color: var(--items-clr);
         border-image: linear-gradient(hsl(0, 0%, 80%), hsl(0, 0%, 80%)) 20% 0 0 / 1px / .2em 0 0;
     }
 }
 
-[aria-pressed="false"] ~ .recap-box {
+[aria-pressed="false"]~.recap-box {
     --max-height: 4.1rem;
     overflow-y: clip;
 }
@@ -224,7 +247,7 @@
 @media screen and (min-width: 768px) {
     .c-form {
         display: grid;
-        grid-template-columns: 1.75fr 1fr;
+        grid-template-columns: 1.5fr 1fr;
         min-block-size: 60lvb;
 
         &> :last-child {

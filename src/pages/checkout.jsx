@@ -3,6 +3,7 @@ import {useBeforeLeave} from "@solidjs/router";
 import { CheckoutModal, CheckoutSummary, Footer, Header, getNavContext} from "../components";
 import icons from "../assets/icons.svg";
 import style from "../assets/styles/checkout.module.css";
+import utils from "../utils";
 
 const fieldsets = [
     {
@@ -30,7 +31,7 @@ const fieldsets = [
         title: "shipping infos",
         inputs: [
             {
-                "errorMessage": "can not be empty",
+                "errorMessage": "cannot be empty",
                 "label": "your address",
                 metadata: { "type": "text", "id": "s-address", "name": "address", "autocomplete": "address-line1", required: true, "data-new": "" }
             },
@@ -39,12 +40,12 @@ const fieldsets = [
                 metadata: { "type": "text", "id": "s-zip", "name": "postCode", "autocomplete": "postal-code" }
             },
             {
-                "errorMessage": "can not be empty",
+                "errorMessage": "cannot be empty",
                 "label": "city",
                 metadata: { "type": "text", "id": "s-city", "name": "city", "autocomplete": "address-line2", required: true, "data-new": "" }
             },
             {
-                "errorMessage": "can not be empty",
+                "errorMessage": "cannot be empty",
                 "label": "country",
                 metadata: { "type": "text", "id": "s-country", "name": "country", "autocomplete": "country-name", required: true, "data-new": "" }
             },
@@ -58,7 +59,7 @@ function Indicator(props) {
         <ul class={style["step-indicator"]}>
             <For each={props.steps}>
                 {
-                    (step, index) => <li {...(props.current() === index() ? { "class": style["step-active"] } : {})}><p>{step}</p></li>
+                    (step, index) => <li {...(props.current === index() ? { "class": style["step-active"] } : {})}><p>{step}</p></li>
                 }
             </For>
         </ul>
@@ -69,7 +70,7 @@ function Indicator(props) {
 function CheckoutPage() {
     const components = Object.create(null);
     const [, {showCartModal}] = getNavContext();
-    const [currentStep, setStep] = createSignal(0);
+    const [formState, setFormState] = createSignal({currentStep: 0, payment: "mobile", valid: false});
 
     function getInputFields() {
         const selector = "step-by-step > :not(.step-out) :is(input,select)";
@@ -95,6 +96,8 @@ function CheckoutPage() {
 
     function stepUpdater({ detail }) {
         const { current } = detail;
+        const state = utils.clone(formState());
+        state.currentStep = current;
         if (current > 0) {
             components.prev.disabled = false;
         } else {
@@ -105,7 +108,7 @@ function CheckoutPage() {
         } else {
             components.next.disabled = false;
         }
-        setStep(current);
+        setFormState(state);
     }
 
     function previousStep() {
@@ -114,22 +117,30 @@ function CheckoutPage() {
 
     function handleChange({ target }) {
         const { form } = components;
+        const state = utils.clone(formState());
         if (target.name !== "paymentType") {
             return;
         }
         if (form.elements.paymentType.value === "mobile") {
             delete form.dataset.cashSelected;
             form.dataset.mobileSelected = "";
+            state.payment = "mobile";
         } else {
             delete form.dataset.mobileSelected;
             form.dataset.cashSelected = "";
+            state.payment = "cash";
         }
+        form.querySelectorAll("[data-payment='mobile'] input").forEach(
+            function (input) {
+                input.required = (state.payment === "mobile");
+            }
+        );
+        state.valid = form.checkValidity();
+        setFormState(state);
     }
 
     function paymentRequested() {
-        if(allFieldsValid(getInputFields())) {
-            components.dialog.showModal();
-        }
+        components.dialog.showModal();
     }
 
     useBeforeLeave(function () {
@@ -139,12 +150,12 @@ function CheckoutPage() {
     return (
         <>
             <Header>
-                <div class="main-content"><a href="/" class="capitalize link">go back</a></div>
+                <div class={style["light-bg"] + " main-content"}><a href="/" class="capitalize back-btn">go back</a></div>
             </Header>
-            <form class={style["c-form"] + " main-content"} action="" data-mobile-selected ref={components.form} onFocusIn={handleInputFocus} onChange={handleChange}>
+            <form class={style["c-form"] + " main-content "} action="" data-mobile-selected ref={components.form} onFocusIn={handleInputFocus} onChange={handleChange}>
                 <div class="box stack">
                     <h1>checkout</h1>
-                    <Indicator steps={steps} current={currentStep} />
+                    <Indicator steps={steps} current={formState().currentStep} />
                     <div class="segragator no-gap no-padding">
                         <button ref={components.prev} aria-label="previous step" class="box row" id="prev_step" type="button" data-icon-position="start" data-icon="arrow_left" disabled="true" autocomplete="off" onClick={previousStep}>previous</button>
                         <button ref={components.next} aria-label="next step" class="box row" id="next_step" type="button" data-icon-position="end" data-icon="arrow_right" onClick={requestNextFormStep}>next</button>
@@ -183,8 +194,8 @@ function CheckoutPage() {
                                 </div>
                             </div>
                             <div class="column" data-payment="mobile">
-                                <div><input type="text" id="t-number" pattern="" name="transNumber" /><label htmlFor="">e-Money number</label></div>
-                                <div><input type="text" id="t-pin" pattern="\d{4,}" name="transPin" /><label htmlFor="">e-Money PIN</label></div>
+                                <div><input type="text" id="t-number" pattern="^\\+\d{1,3}\d{8,12}$" name="transNumber" placeholder="ex. +237649383039" /><label for="t-number" data-error="wrong format">e-Money number</label></div>
+                                <div><input type="text" id="t-pin" pattern="\d{4,}" name="transPin" placeholder="ex. 1234"  /><label for="t-pin" data-error="wrong format">e-Money PIN</label></div>
                             </div>
                             <div class="row" data-payment="cash">
                                 <svg width="48" height="48" class="no-shrink" data-icon-theme="primary">
@@ -196,7 +207,7 @@ function CheckoutPage() {
                         </fieldset>
                     </step-by-step>
                 </div>
-                <CheckoutSummary onPayment={paymentRequested}/>
+                <CheckoutSummary onPayment={() => components.dialog.showModal()} canNotPay={!formState().valid}/>
             </form>
             <Footer />
             <CheckoutModal ref={components.dialog}/>
