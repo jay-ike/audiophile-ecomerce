@@ -91,7 +91,7 @@ body {
         margin: 0;
     }
 
-    img {
+    :is(img, svg) {
         max-inline-size: 100%;
         height: auto;
         display: block;
@@ -205,6 +205,10 @@ body {
     p:where(:not([class])) {
         text-wrap: balance;
         max-inline-size: var(--p-width, 50em);
+    }
+
+    main:where(#root > *) {
+        min-block-size: 71lvb;
     }
 }
 
@@ -405,6 +409,7 @@ body {
             position: absolute;
             inset: 0;
         }
+
         & a:where(:focus-visible, :hover) {
             color: var(--system-color-paleOrange);
         }
@@ -602,6 +607,11 @@ body {
         display: none;
     }
 
+    .not-found {
+        --alignment: center;
+        container: not-found / inline-size;
+    }
+
     @media screen and (min-width: 480px) {
         .pm-grid {
             --g-template: "area1 area1" "area2 area3";
@@ -610,6 +620,7 @@ body {
         .menu>.categories {
             padding: 4.5rem 1.5rem;
         }
+
 
         .categories {
             --col-dir: row;
@@ -643,6 +654,11 @@ body {
             --img-h: 100%;
             min-block-size: 500px;
         }
+
+        .not-found {
+            --col-dir: row;
+        }
+
     }
 }
 
