@@ -1,5 +1,5 @@
-import { For, Show, createSignal, createResource } from "solid-js";
-import { useParams } from "@solidjs/router";
+import { For, Show, createEffect, createSignal, createResource } from "solid-js";
+import { useNavigate, useParams } from "@solidjs/router";
 import {
     BrandDescription,
     Categories,
@@ -25,11 +25,10 @@ async function fetchProduct(id) {
 
 function ProductPage() {
     const params = useParams();
+    const navigate = useNavigate();
     const [state] = createResource(() => params.id, fetchProduct);
     const [, { addToCart }] = getNavContext();
-    const [item, setItem] = createSignal({
-        count: 1,
-    });
+    const [item, setItem] = createSignal({count: 1});
     const productInfo = function() {
         return {
             cost: state().product?.price,
@@ -38,6 +37,11 @@ function ProductPage() {
             name: state().product?.name
         }
     };
+    createEffect(function () {
+        if (state.state === "ready" && state().product === undefined) {
+            navigate("/404", {replace: true});
+        }
+    });
 
     function incrementCount(item) {
         const clone = productInfo();
