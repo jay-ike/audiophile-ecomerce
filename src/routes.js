@@ -2,7 +2,11 @@ import { lazy } from "solid-js";
 
 const allowedCategories = ["headphone", "speaker", "earphone"];
 function updateTitle(title) {
+    const anounceDiv = document.querySelector("#anouncer");
     document.title = title ?? document.title;
+    if (anounceDiv) {
+        anounceDiv.textContent = "switched to the " + title + " page";
+    }
 }
 const routes = [
     {
