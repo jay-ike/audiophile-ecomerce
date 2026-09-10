@@ -70,7 +70,7 @@ a:where(:is(.main-product, .hero, .product-2, .third-product) *) {
 
 .product-2 {
     --img-position: 20% 80%;
-    --img-w: min(1110px, 100vi);
+    --img-w: min(1110px, 100cqi);
     --img-h: 320px;
     clip-path: inset(0 round .5em);
 
