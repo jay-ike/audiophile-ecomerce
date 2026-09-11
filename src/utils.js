@@ -38,7 +38,7 @@ function getFormatter() {
         { day: "numeric", month: "short", year: "numeric" }
     );
     let currencyFormatter = new Intl.NumberFormat(
-        navigator.language,
+        navigator.language.split("-")[0],
         { currency: "USD", style: "currency" }
     );
 

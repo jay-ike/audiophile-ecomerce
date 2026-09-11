@@ -436,7 +436,7 @@ body {
         --modal-size: 100vi;
         opacity: 1;
         z-index: 2;
-        inset: 4.7rem 0 auto;
+        inset: 4.9rem 0 auto;
         visibility: visible;
         clip-path: inset(0 round 0 0 .5rem .5rem);
         max-block-size: 80lvb;
@@ -541,13 +541,14 @@ body {
         container: section / inline-size;
     }
 
-    .categories>li {
+    .categories > li {
         --color-fill: hsl(0, 0%, 94%);
         --radius: .5rem;
         display: flex;
         flex-direction: column;
         align-items: center;
         gap: 1rem;
+        position: relative;
 
         &> :first-child {
             margin-block-start: -3em;
